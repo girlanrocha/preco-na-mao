@@ -1,51 +1,154 @@
-const seed=[
-{id:1,user:'Ana',category:'Supermercado',product:'Arroz',brand:'Tipo 1 • 5 kg',store:'Mercado Central',price:24.90,time:'Hoje, 08:20',confirms:8,mine:false},
-{id:2,user:'Carlos',category:'Farmácia',product:'Fralda infantil',brand:'Pacote M • 30 un.',store:'Farmácia Popular',price:34.99,time:'Hoje, 09:05',confirms:4,mine:false},
-{id:3,user:'Marina',category:'Supermercado',product:'Café',brand:'500 g',store:'Supermercado Avenida',price:17.49,time:'Ontem, 18:42',confirms:12,mine:false},
-{id:4,user:'Pedro',category:'Farmácia',product:'Shampoo',brand:'350 ml',store:'Drogaria Centro',price:12.90,time:'Ontem, 17:10',confirms:3,mine:false}
-];
-let posts=JSON.parse(localStorage.getItem('pnm_posts')||'null')||seed;let points=+(localStorage.getItem('pnm_points')||1000);let confirmed=+(localStorage.getItem('pnm_confirms')||0);let filter='Todos',cat='Todos';
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];const money=v=>Number(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});const save=()=>{localStorage.setItem('pnm_posts',JSON.stringify(posts));localStorage.setItem('pnm_points',points);localStorage.setItem('pnm_confirms',confirmed)};
-function toast(t){$('#toast').textContent=t;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),1800)}
-function card(p){return `<article class='post'><div class='post-top'><div><b>${p.user}</b><div class='meta'>${p.store} • ${p.time}</div></div><span class='badge'>${p.category==='Farmácia'?'💊':'🛒'} ${p.category}</span></div><div class='price'>${money(p.price)}</div><b>${p.product}</b> <span class='meta'>${p.brand||''}</span><div class='actions'><button onclick='confirmPrice(${p.id},this)'>✓ Confirmar (${p.confirms||0})</button><button onclick="toast('Comentários entrarão quando conectarmos o banco online')">💬 Comentar</button></div></article>`}
-function render(){let f=posts.filter(p=>filter==='Todos'||p.category===filter);$('#feedList').innerHTML=f.map(card).join('')||`<div class='empty'>Nenhum preço nesta categoria.</div>`;renderCompare();let mine=posts.filter(p=>p.mine);$('#myPosts').innerHTML=mine.map(card).join('')||`<div class='empty'>Você ainda não publicou preços.</div>`;$('#pubCount').textContent=mine.length;$('#confirmCount').textContent=confirmed;['#topPoints','#pointsBalance','#profilePoints'].forEach(x=>$(x).textContent=points)}
-window.confirmPrice=(id,btn)=>{if(btn.classList.contains('confirmed'))return;let p=posts.find(x=>x.id===id);p.confirms=(p.confirms||0)+1;confirmed++;btn.classList.add('confirmed');btn.textContent=`✓ Confirmado (${p.confirms})`;save();render();toast('Preço confirmado!')};window.toast=toast;
-function renderCompare(){let q=($('#search')?.value||'').toLowerCase();let a=posts.filter(p=>(cat==='Todos'||p.category===cat)&&(`${p.product} ${p.brand} ${p.store}`.toLowerCase().includes(q))).sort((a,b)=>a.price-b.price);$('#compareList').innerHTML=a.map(p=>`<div class='compare-card'><div><b>${p.product}</b><div class='meta'>${p.brand||''}</div><div class='meta'>${p.store}</div></div><div class='right'><b>${money(p.price)}</b><div class='meta'>${p.confirms||0} confirmações</div></div></div>`).join('')||`<div class='empty'>Nenhum preço encontrado.</div>`}
-$$('.nav').forEach(b=>b.onclick=()=>{$$('.nav').forEach(x=>x.classList.remove('on'));b.classList.add('on');$$('.screen').forEach(x=>x.classList.remove('active'));$('#'+b.dataset.screen).classList.add('active');scrollTo(0,0)});$$('.chip').forEach(b=>b.onclick=()=>{$$('.chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');filter=b.dataset.filter;render()});$$('.tab').forEach(b=>b.onclick=()=>{$$('.tab').forEach(x=>x.classList.remove('on'));b.classList.add('on');cat=b.dataset.cat;renderCompare()});$('#search').oninput=renderCompare;
-$('#priceForm').onsubmit=e=>{e.preventDefault();posts.unshift({id:Date.now(),user:'Você',category:$('#category').value,product:$('#product').value.trim(),brand:$('#brand').value.trim(),store:$('#store').value.trim(),price:+$('#price').value,time:'Agora',confirms:0,mine:true});points+=10;$('#history').insertAdjacentHTML('afterbegin',`<p>+10 • Preço cadastrado <span>${$('#product').value}</span></p>`);save();e.target.reset();render();toast('+10 pontos! Preço publicado.');document.querySelector('[data-screen="feed"]').click()};
-$('#redeem').onclick=()=>{if(points<1000)return toast('Você ainda não tem 1.000 pontos.');if(confirm('Trocar 1.000 pontos por uma escova de dentes?')){points-=1000;$('#history').insertAdjacentHTML('afterbegin',`<p>-1.000 • Recompensa <span>Escova de dentes</span></p>`);save();render();toast('Troca registrada!')}};
-render();if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
+// ========================================
+// VP COMPRAS - APP
+// ========================================
 
-// ===== CONTA DO USUÁRIO VP COMPRAS =====
+const $ = (selector) => document.querySelector(selector);
+const $$ = (selector) => [...document.querySelectorAll(selector)];
 
-const registerForm = document.querySelector("#registerForm");
-const loginForm = document.querySelector("#loginForm");
-const showRegister = document.querySelector("#showRegister");
-const showLogin = document.querySelector("#showLogin");
-const logoutButton = document.querySelector("#logoutButton");
+function toast(message) {
+  const box = $("#toast");
+  if (!box) return;
 
-function openScreen(id) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  const screen = document.querySelector("#" + id);
-  if (screen) screen.classList.add("active");
+  box.textContent = message;
+  box.classList.add("show");
+
+  setTimeout(() => {
+    box.classList.remove("show");
+  }, 2000);
 }
 
+function openScreen(id) {
+  $$(".screen").forEach((screen) => {
+    screen.classList.remove("active");
+  });
+
+  const screen = $("#" + id);
+
+  if (screen) {
+    screen.classList.add("active");
+  }
+
+  // Menu inferior só aparece para usuário logado
+  const nav = $("#mainNav");
+
+  if (nav) {
+    if (id === "login" || id === "register") {
+      nav.style.display = "none";
+    } else {
+      nav.style.display = "";
+    }
+  }
+
+  window.scrollTo(0, 0);
+}
+
+
+// ========================================
+// ATUALIZAR USUÁRIO NA TELA
+// ========================================
+
+function updateUser(user) {
+  if (!user) return;
+
+  const idVP = `VP-${String(user.id).padStart(5, "0")}`;
+
+  if ($("#profileName")) {
+    $("#profileName").textContent = user.name || "Meu perfil";
+  }
+
+  if ($("#profileInfo")) {
+    $("#profileInfo").textContent =
+      `${user.city || "Vila Pavão"} • ${idVP}`;
+  }
+
+  const userPoints = Number(user.points || 0);
+
+  if ($("#profilePoints")) {
+    $("#profilePoints").textContent = userPoints;
+  }
+
+  if ($("#pointsBalance")) {
+    $("#pointsBalance").textContent = userPoints;
+  }
+
+  if ($("#topPoints")) {
+    $("#topPoints").textContent = userPoints;
+  }
+}
+
+
+// ========================================
+// VERIFICAR SE JÁ ESTÁ LOGADO
+// ========================================
+
+async function checkSession() {
+  try {
+
+    const response = await fetch("/api/me", {
+      method: "GET",
+      credentials: "include"
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.ok && data.user) {
+
+      updateUser(data.user);
+
+      openScreen("feed");
+
+      return;
+    }
+
+  } catch (error) {
+    console.error("Erro ao verificar sessão:", error);
+  }
+
+  openScreen("login");
+}
+
+
+// ========================================
+// BOTÕES ENTRAR / CRIAR CONTA
+// ========================================
+
+const showRegister = $("#showRegister");
+const showLogin = $("#showLogin");
+
 if (showRegister) {
-  showRegister.onclick = () => openScreen("register");
+  showRegister.addEventListener("click", () => {
+    openScreen("register");
+  });
 }
 
 if (showLogin) {
-  showLogin.onclick = () => openScreen("login");
+  showLogin.addEventListener("click", () => {
+    openScreen("login");
+  });
 }
 
-if (registerForm) {
-  registerForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
 
-    const name = document.querySelector("#registerName").value.trim();
-    const email = document.querySelector("#registerEmail").value.trim();
-    const password = document.querySelector("#registerPassword").value;
-    const city = document.querySelector("#registerCity").value.trim();
+// ========================================
+// CADASTRO
+// ========================================
+
+const registerForm = $("#registerForm");
+
+if (registerForm) {
+
+  registerForm.addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+    const name = $("#registerName").value.trim();
+    const email = $("#registerEmail").value.trim().toLowerCase();
+    const password = $("#registerPassword").value;
+    const city = $("#registerCity").value.trim();
+
+    if (!name || !email || !password || !city) {
+      toast("Preencha todos os campos.");
+      return;
+    }
 
     if (password.length < 8) {
       toast("A senha precisa ter pelo menos 8 caracteres.");
@@ -53,58 +156,93 @@ if (registerForm) {
     }
 
     try {
+
       const response = await fetch("/api/register", {
+
         method: "POST",
+
         headers: {
           "Content-Type": "application/json"
         },
+
+        credentials: "include",
+
         body: JSON.stringify({
           name,
           email,
           password,
           city
         })
+
       });
 
       const data = await response.json();
 
       if (!response.ok || !data.ok) {
-        toast(data.message || "Não foi possível criar a conta.");
+        toast(data.message || "Não foi possível criar sua conta.");
         return;
       }
 
-      toast("Conta criada com sucesso!");
-
       registerForm.reset();
-      document.querySelector("#registerCity").value = "Vila Pavão";
+
+      if ($("#registerCity")) {
+        $("#registerCity").value = "Vila Pavão";
+      }
+
+      toast("Conta criada! Agora faça seu login.");
 
       openScreen("login");
 
     } catch (error) {
+
       console.error(error);
+
       toast("Erro de conexão. Tente novamente.");
+
     }
+
   });
+
 }
 
-if (loginForm) {
-  loginForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
 
-    const email = document.querySelector("#loginEmail").value.trim();
-    const password = document.querySelector("#loginPassword").value;
+// ========================================
+// LOGIN
+// ========================================
+
+const loginForm = $("#loginForm");
+
+if (loginForm) {
+
+  loginForm.addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+    const email = $("#loginEmail").value.trim().toLowerCase();
+    const password = $("#loginPassword").value;
+
+    if (!email || !password) {
+      toast("Informe seu e-mail e senha.");
+      return;
+    }
 
     try {
+
       const response = await fetch("/api/login", {
+
         method: "POST",
+
         headers: {
           "Content-Type": "application/json"
         },
+
         credentials: "include",
+
         body: JSON.stringify({
           email,
           password
         })
+
       });
 
       const data = await response.json();
@@ -114,45 +252,150 @@ if (loginForm) {
         return;
       }
 
-      if (data.user) {
-        document.querySelector("#profileName").textContent =
-          data.user.name || "Meu perfil";
+      updateUser(data.user);
 
-        document.querySelector("#profileInfo").textContent =
-          `${data.user.city || ""} • VP-${String(data.user.id).padStart(5, "0")}`;
-
-        document.querySelector("#profilePoints").textContent =
-          data.user.points ?? 0;
-
-        document.querySelector("#pointsBalance").textContent =
-          data.user.points ?? 0;
-
-        document.querySelector("#topPoints").textContent =
-          data.user.points ?? 0;
-      }
+      loginForm.reset();
 
       toast("Login realizado!");
+
       openScreen("feed");
 
     } catch (error) {
+
       console.error(error);
+
       toast("Erro de conexão. Tente novamente.");
+
     }
+
   });
+
 }
 
+
+// ========================================
+// MENU INFERIOR
+// ========================================
+
+$$(".nav").forEach((button) => {
+
+  button.addEventListener("click", () => {
+
+    $$(".nav").forEach((item) => {
+      item.classList.remove("on");
+    });
+
+    button.classList.add("on");
+
+    openScreen(button.dataset.screen);
+
+  });
+
+});
+
+
+// ========================================
+// SAIR
+// ========================================
+
+const logoutButton = $("#logoutButton");
+
 if (logoutButton) {
-  logoutButton.onclick = async () => {
+
+  logoutButton.addEventListener("click", async () => {
+
     try {
+
       await fetch("/api/logout", {
         method: "POST",
         credentials: "include"
       });
+
     } catch (error) {
       console.error(error);
     }
 
-    openScreen("login");
+    if ($("#loginForm")) {
+      $("#loginForm").reset();
+    }
+
     toast("Você saiu da conta.");
-  };
+
+    openScreen("login");
+
+  });
+
 }
+
+
+// ========================================
+// PUBLICAR PREÇO
+// Por enquanto apenas estrutura visual.
+// Depois conectaremos ao D1.
+// ========================================
+
+const priceForm = $("#priceForm");
+
+if (priceForm) {
+
+  priceForm.addEventListener("submit", (event) => {
+
+    event.preventDefault();
+
+    toast("Agora vamos conectar a publicação ao banco.");
+
+  });
+
+}
+
+
+// ========================================
+// PESQUISA
+// ========================================
+
+const search = $("#search");
+
+if (search) {
+
+  search.addEventListener("input", () => {
+
+    // A pesquisa será conectada ao banco D1
+    // na próxima etapa.
+
+  });
+
+}
+
+
+// ========================================
+// SERVICE WORKER
+// ========================================
+
+if ("serviceWorker" in navigator) {
+
+  window.addEventListener("load", () => {
+
+    navigator.serviceWorker
+      .register("/sw.js")
+      .catch((error) => {
+        console.error("Service Worker:", error);
+      });
+
+  });
+
+}
+
+
+// ========================================
+// INICIALIZAÇÃO
+// ========================================
+
+// Esconde o menu enquanto verificamos a conta.
+
+if ($("#mainNav")) {
+  $("#mainNav").style.display = "none";
+}
+
+// Verifica a sessão no servidor.
+
+checkSession();
