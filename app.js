@@ -15,3 +15,144 @@ $$('.nav').forEach(b=>b.onclick=()=>{$$('.nav').forEach(x=>x.classList.remove('o
 $('#priceForm').onsubmit=e=>{e.preventDefault();posts.unshift({id:Date.now(),user:'Você',category:$('#category').value,product:$('#product').value.trim(),brand:$('#brand').value.trim(),store:$('#store').value.trim(),price:+$('#price').value,time:'Agora',confirms:0,mine:true});points+=10;$('#history').insertAdjacentHTML('afterbegin',`<p>+10 • Preço cadastrado <span>${$('#product').value}</span></p>`);save();e.target.reset();render();toast('+10 pontos! Preço publicado.');document.querySelector('[data-screen="feed"]').click()};
 $('#redeem').onclick=()=>{if(points<1000)return toast('Você ainda não tem 1.000 pontos.');if(confirm('Trocar 1.000 pontos por uma escova de dentes?')){points-=1000;$('#history').insertAdjacentHTML('afterbegin',`<p>-1.000 • Recompensa <span>Escova de dentes</span></p>`);save();render();toast('Troca registrada!')}};
 render();if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
+
+// ===== CONTA DO USUÁRIO VP COMPRAS =====
+
+const registerForm = document.querySelector("#registerForm");
+const loginForm = document.querySelector("#loginForm");
+const showRegister = document.querySelector("#showRegister");
+const showLogin = document.querySelector("#showLogin");
+const logoutButton = document.querySelector("#logoutButton");
+
+function openScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  const screen = document.querySelector("#" + id);
+  if (screen) screen.classList.add("active");
+}
+
+if (showRegister) {
+  showRegister.onclick = () => openScreen("register");
+}
+
+if (showLogin) {
+  showLogin.onclick = () => openScreen("login");
+}
+
+if (registerForm) {
+  registerForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.querySelector("#registerName").value.trim();
+    const email = document.querySelector("#registerEmail").value.trim();
+    const password = document.querySelector("#registerPassword").value;
+    const city = document.querySelector("#registerCity").value.trim();
+
+    if (password.length < 8) {
+      toast("A senha precisa ter pelo menos 8 caracteres.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          city
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        toast(data.message || "Não foi possível criar a conta.");
+        return;
+      }
+
+      toast("Conta criada com sucesso!");
+
+      registerForm.reset();
+      document.querySelector("#registerCity").value = "Vila Pavão";
+
+      openScreen("login");
+
+    } catch (error) {
+      console.error(error);
+      toast("Erro de conexão. Tente novamente.");
+    }
+  });
+}
+
+if (loginForm) {
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.querySelector("#loginEmail").value.trim();
+    const password = document.querySelector("#loginPassword").value;
+
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email,
+          password
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        toast(data.message || "E-mail ou senha incorretos.");
+        return;
+      }
+
+      if (data.user) {
+        document.querySelector("#profileName").textContent =
+          data.user.name || "Meu perfil";
+
+        document.querySelector("#profileInfo").textContent =
+          `${data.user.city || ""} • VP-${String(data.user.id).padStart(5, "0")}`;
+
+        document.querySelector("#profilePoints").textContent =
+          data.user.points ?? 0;
+
+        document.querySelector("#pointsBalance").textContent =
+          data.user.points ?? 0;
+
+        document.querySelector("#topPoints").textContent =
+          data.user.points ?? 0;
+      }
+
+      toast("Login realizado!");
+      openScreen("feed");
+
+    } catch (error) {
+      console.error(error);
+      toast("Erro de conexão. Tente novamente.");
+    }
+  });
+}
+
+if (logoutButton) {
+  logoutButton.onclick = async () => {
+    try {
+      await fetch("/api/logout", {
+        method: "POST",
+        credentials: "include"
+      });
+    } catch (error) {
+      console.error(error);
+    }
+
+    openScreen("login");
+    toast("Você saiu da conta.");
+  };
+}
