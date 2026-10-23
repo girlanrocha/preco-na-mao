@@ -6,5 +6,12 @@
   "assets": {
     "directory": ".",
     "binding": "ASSETS"
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "preco-na-mao-db",
+      "database_id": "c654efef-22c1-4c71-8382-9af15db34a5c"
+    }
+  ]
 }
