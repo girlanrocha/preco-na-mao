@@ -7,9 +7,11 @@ const SESSION_DAYS = 30;
 
 function bytesToBase64(bytes) {
   let binary = "";
+
   for (const byte of bytes) {
     binary += String.fromCharCode(byte);
   }
+
   return btoa(binary);
 }
 
@@ -43,37 +45,45 @@ async function hashPassword(password, saltBytes = null) {
   const encoder = new TextEncoder();
 
   const salt =
-    saltBytes || crypto.getRandomValues(new Uint8Array(16));
+    saltBytes ||
+    crypto.getRandomValues(new Uint8Array(16));
 
-  const keyMaterial = await crypto.subtle.importKey(
-    "raw",
-    encoder.encode(password),
-    "PBKDF2",
-    false,
-    ["deriveBits"]
-  );
+  const keyMaterial =
+    await crypto.subtle.importKey(
+      "raw",
+      encoder.encode(password),
+      "PBKDF2",
+      false,
+      ["deriveBits"]
+    );
 
-  const derivedBits = await crypto.subtle.deriveBits(
-    {
-      name: "PBKDF2",
-      hash: "SHA-256",
-      salt,
-      iterations: PBKDF2_ITERATIONS
-    },
-    keyMaterial,
-    256
-  );
+  const derivedBits =
+    await crypto.subtle.deriveBits(
+      {
+        name: "PBKDF2",
+        hash: "SHA-256",
+        salt,
+        iterations: PBKDF2_ITERATIONS
+      },
+      keyMaterial,
+      256
+    );
 
   return [
     "pbkdf2_sha256",
     PBKDF2_ITERATIONS,
     bytesToBase64(salt),
-    bytesToBase64(new Uint8Array(derivedBits))
+    bytesToBase64(
+      new Uint8Array(derivedBits)
+    )
   ].join("$");
 }
 
 
-async function verifyPassword(password, storedHash) {
+async function verifyPassword(
+  password,
+  storedHash
+) {
   try {
     const parts = storedHash.split("$");
 
@@ -92,27 +102,31 @@ async function verifyPassword(password, storedHash) {
 
     const encoder = new TextEncoder();
 
-    const keyMaterial = await crypto.subtle.importKey(
-      "raw",
-      encoder.encode(password),
-      "PBKDF2",
-      false,
-      ["deriveBits"]
-    );
+    const keyMaterial =
+      await crypto.subtle.importKey(
+        "raw",
+        encoder.encode(password),
+        "PBKDF2",
+        false,
+        ["deriveBits"]
+      );
 
-    const derivedBits = await crypto.subtle.deriveBits(
-      {
-        name: "PBKDF2",
-        hash: "SHA-256",
-        salt,
-        iterations
-      },
-      keyMaterial,
-      256
-    );
+    const derivedBits =
+      await crypto.subtle.deriveBits(
+        {
+          name: "PBKDF2",
+          hash: "SHA-256",
+          salt,
+          iterations
+        },
+        keyMaterial,
+        256
+      );
 
     const calculatedHash =
-      bytesToBase64(new Uint8Array(derivedBits));
+      bytesToBase64(
+        new Uint8Array(derivedBits)
+      );
 
     return calculatedHash === expectedHash;
 
@@ -128,7 +142,9 @@ async function verifyPassword(password, storedHash) {
 
 function createSessionToken() {
   const bytes =
-    crypto.getRandomValues(new Uint8Array(32));
+    crypto.getRandomValues(
+      new Uint8Array(32)
+    );
 
   return bytesToHex(bytes);
 }
@@ -139,9 +155,14 @@ async function hashToken(token) {
     new TextEncoder().encode(token);
 
   const digest =
-    await crypto.subtle.digest("SHA-256", data);
+    await crypto.subtle.digest(
+      "SHA-256",
+      data
+    );
 
-  return bytesToHex(new Uint8Array(digest));
+  return bytesToHex(
+    new Uint8Array(digest)
+  );
 }
 
 
@@ -149,7 +170,8 @@ function getCookie(request, name) {
   const cookieHeader =
     request.headers.get("Cookie") || "";
 
-  const cookies = cookieHeader.split(";");
+  const cookies =
+    cookieHeader.split(";");
 
   for (const cookie of cookies) {
     const [key, ...value] =
@@ -191,9 +213,15 @@ function clearSessionCookie() {
 }
 
 
-async function getCurrentUser(request, env) {
+async function getCurrentUser(
+  request,
+  env
+) {
   const token =
-    getCookie(request, "vp_session");
+    getCookie(
+      request,
+      "vp_session"
+    );
 
   if (!token) {
     return null;
@@ -324,7 +352,9 @@ export default {
 
           const email =
             typeof body.email === "string"
-              ? body.email.trim().toLowerCase()
+              ? body.email
+                  .trim()
+                  .toLowerCase()
               : "";
 
           const password =
@@ -346,7 +376,8 @@ export default {
             return Response.json(
               {
                 ok: false,
-                message: "Informe um nome válido."
+                message:
+                  "Informe um nome válido."
               },
               { status: 400 }
             );
@@ -362,7 +393,8 @@ export default {
             return Response.json(
               {
                 ok: false,
-                message: "Informe um e-mail válido."
+                message:
+                  "Informe um e-mail válido."
               },
               { status: 400 }
             );
@@ -448,7 +480,8 @@ export default {
                 id: result.meta.last_row_id,
                 name,
                 email,
-                city: city || "Vila Pavão",
+                city:
+                  city || "Vila Pavão",
                 points: 0
               }
             },
@@ -458,13 +491,17 @@ export default {
 
         } catch (error) {
 
-          console.error(error);
+          console.error(
+            "ERRO CADASTRO:",
+            error
+          );
 
           return Response.json(
             {
               ok: false,
               message:
-                "Não foi possível criar a conta."
+                "Erro no cadastro: " +
+                error.message
             },
             { status: 500 }
           );
@@ -490,7 +527,9 @@ export default {
 
           const email =
             typeof body.email === "string"
-              ? body.email.trim().toLowerCase()
+              ? body.email
+                  .trim()
+                  .toLowerCase()
               : "";
 
           const password =
@@ -593,7 +632,8 @@ export default {
           return Response.json(
             {
               ok: true,
-              message: "Login realizado.",
+              message:
+                "Login realizado.",
               user: {
                 id: user.id,
                 name: user.name,
