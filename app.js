@@ -338,16 +338,82 @@ const priceForm = $("#priceForm");
 
 if (priceForm) {
 
-  priceForm.addEventListener("submit", (event) => {
+  priceForm.addEventListener("submit", async (event) => {
 
     event.preventDefault();
 
-    toast("Agora vamos conectar a publicação ao banco.");
+    const category = $("#category").value;
+    const product = $("#product").value.trim();
+    const brand = $("#brand").value.trim();
+    const store = $("#store").value.trim();
+    const price = Number($("#price").value);
+
+    if (!product || !store || !price || price <= 0) {
+      toast("Preencha produto, estabelecimento e preço.");
+      return;
+    }
+
+    try {
+
+      const response = await fetch("/api/prices", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          category,
+          product,
+          brand,
+          store,
+          price
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        toast(data.message || "Não foi possível publicar o preço.");
+        return;
+      }
+
+      // Atualiza os pontos na tela
+      if ($("#topPoints")) {
+        $("#topPoints").textContent = data.points;
+      }
+
+      if ($("#pointsBalance")) {
+        $("#pointsBalance").textContent = data.points;
+      }
+
+      if ($("#profilePoints")) {
+        $("#profilePoints").textContent = data.points;
+      }
+
+      priceForm.reset();
+
+      toast("+10 pontos! Preço publicado.");
+
+      // Volta para o feed
+      setTimeout(() => {
+        const feedButton =
+          document.querySelector('[data-screen="feed"]');
+
+        if (feedButton) {
+          feedButton.click();
+        }
+      }, 800);
+
+    } catch (error) {
+
+      console.error("Erro ao publicar:", error);
+
+      toast("Erro de conexão. Tente novamente.");
+    }
 
   });
 
 }
-
 
 // ========================================
 // PESQUISA
