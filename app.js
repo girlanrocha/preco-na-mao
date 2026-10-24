@@ -1,5 +1,5 @@
 // ========================================
-// VP COMPRAS - APP
+// VP COMPRAS - APp
 // ========================================
 
 const $ = (selector) => document.querySelector(selector);
