@@ -457,7 +457,7 @@ async function loadFeed() {
 
       const card = document.createElement("div");
 
-      card.className = "price-card";
+      card.className = "post price-card";
 
       const price = Number(item.price)
         .toLocaleString("pt-BR", {
