@@ -571,54 +571,7 @@ if ($("#mainNav")) {
 // Verifica a sessão no servidor.
 
 checkSession();
-/* CARDS DE PREÇOS DO FEED */
 
-.price-card{
-  background:#ffffff;
-  border:1px solid #e4eaf2;
-  border-radius:16px;
-  padding:16px;
-  margin-bottom:14px;
-  box-shadow:0 4px 18px rgba(17,71,128,.08);
-}
 
-.price-card-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:12px;
-}
 
-.price-card-top strong{
-  font-size:18px;
-  color:#172033;
-}
 
-.price-card-top span{
-  color:#667085;
-}
-
-.price-value{
-  font-size:22px !important;
-  color:#0b67d5 !important;
-  white-space:nowrap;
-}
-
-.price-store{
-  margin-top:12px;
-  font-weight:600;
-  color:#172033;
-}
-
-.price-info{
-  margin-top:6px;
-  color:#475467;
-}
-
-.price-user{
-  margin-top:10px;
-  padding-top:10px;
-  border-top:1px solid #e4eaf2;
-  font-size:13px;
-  color:#667085;
-}
