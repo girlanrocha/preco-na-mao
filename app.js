@@ -466,33 +466,70 @@ async function loadFeed() {
         });
 
       card.innerHTML = `
-        <div class="price-card-top">
-          <div>
-            <strong>${escapeHTML(item.product)}</strong>
-            ${
-              item.brand
-                ? `<span> • ${escapeHTML(item.brand)}</span>`
-                : ""
-            }
-          </div>
+  <div class="price-card-header">
+    <div>
+      <span class="price-category">
+        🛒 ${escapeHTML(item.category || "Preço")}
+      </span>
 
-          <strong class="price-value">
-            ${price}
-          </strong>
-        </div>
+      <h3 class="price-product">
+        ${escapeHTML(item.product)}
+      </h3>
 
-        <div class="price-store">
-          🏪 ${escapeHTML(item.store)}
-        </div>
+      ${
+        item.brand
+          ? `<span class="price-brand">${escapeHTML(item.brand)}</span>`
+          : ""
+      }
+    </div>
 
-        <div class="price-info">
-          📍 ${escapeHTML(item.city || "")}
-        </div>
+    <div class="price-points">
+      +10 ⭐
+    </div>
+  </div>
 
-        <div class="price-user">
-          Publicado por ${escapeHTML(item.user_code)}
-        </div>
-      `;
+  <div class="price-main">
+    <small>Preço informado</small>
+    <strong class="price-value">${price}</strong>
+  </div>
+
+  <div class="price-details">
+    <div>
+      <span>🏪</span>
+      <div>
+        <small>Estabelecimento</small>
+        <strong>${escapeHTML(item.store)}</strong>
+      </div>
+    </div>
+
+    <div>
+      <span>📍</span>
+      <div>
+        <small>Localização</small>
+        <strong>${escapeHTML(item.city || "")}</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="price-user">
+    <span class="user-avatar">👤</span>
+
+    <div>
+      <small>Publicado por</small>
+      <strong>${escapeHTML(item.user_code)}</strong>
+    </div>
+  </div>
+
+  <div class="price-actions">
+    <button type="button" class="confirm-price">
+      ✓ Confirmar preço
+    </button>
+
+    <button type="button" class="comment-price">
+      💬 Comentar
+    </button>
+  </div>
+`;
 
       feedList.appendChild(card);
 
