@@ -12,3 +12,45 @@ header{background:linear-gradient(135deg,#0759bd,#1976e9)}
 .avatar{background:#0b67d5}
 .badge{background:#eaf3ff;color:#0759bd}
 .actions button.confirmed{background:#eaf3ff;color:#0759bd}
+/* ========================================
+   CARDS DO FEED - VP COMPRAS
+======================================== */
+
+#feedList{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-top:16px;
+}
+
+#feedList .post{
+  background:#fff;
+  border:1px solid #e4eaf2;
+  border-radius:16px;
+  padding:16px;
+  box-shadow:0 4px 18px rgba(17,71,128,.08);
+}
+
+#feedList .post strong{
+  font-size:18px;
+  color:#172033;
+}
+
+#feedList .price{
+  display:block;
+  font-size:27px;
+  font-weight:800;
+  color:#0b67d5;
+  margin:7px 0;
+}
+
+#feedList .post p{
+  margin:5px 0;
+  line-height:1.4;
+}
+
+#feedList .post small{
+  display:block;
+  margin-top:10px;
+  color:#667085;
+}
