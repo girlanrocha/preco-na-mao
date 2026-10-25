@@ -96,6 +96,8 @@ async function checkSession() {
       updateUser(data.user);
 
       openScreen("feed");
+loadFeed();
+
 
       return;
     }
@@ -393,7 +395,7 @@ if (priceForm) {
       priceForm.reset();
 
       toast("+10 pontos! Preço publicado.");
-
+loadFeed();
       // Volta para o feed
       setTimeout(() => {
         const feedButton =
@@ -414,7 +416,111 @@ if (priceForm) {
   });
 
 }
+// ========================================
+// FEED - CARREGAR PREÇOS DO BANCO
+// ========================================
 
+async function loadFeed() {
+
+  const feedList = $("#feedList");
+
+  if (!feedList) {
+    return;
+  }
+
+  feedList.innerHTML = "<p>Carregando preços...</p>";
+
+  try {
+
+    const response = await fetch("/api/prices", {
+      method: "GET",
+      credentials: "include"
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.ok) {
+      feedList.innerHTML =
+        "<p>Não foi possível carregar os preços.</p>";
+      return;
+    }
+
+    if (!data.prices || data.prices.length === 0) {
+      feedList.innerHTML =
+        "<p>Ainda não há preços publicados.</p>";
+      return;
+    }
+
+    feedList.innerHTML = "";
+
+    data.prices.forEach((item) => {
+
+      const card = document.createElement("div");
+
+      card.className = "price-card";
+
+      const price = Number(item.price)
+        .toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL"
+        });
+
+      card.innerHTML = `
+        <div class="price-card-top">
+          <div>
+            <strong>${escapeHTML(item.product)}</strong>
+            ${
+              item.brand
+                ? `<span> • ${escapeHTML(item.brand)}</span>`
+                : ""
+            }
+          </div>
+
+          <strong class="price-value">
+            ${price}
+          </strong>
+        </div>
+
+        <div class="price-store">
+          🏪 ${escapeHTML(item.store)}
+        </div>
+
+        <div class="price-info">
+          📍 ${escapeHTML(item.city || "")}
+        </div>
+
+        <div class="price-user">
+          Publicado por ${escapeHTML(item.user_code)}
+        </div>
+      `;
+
+      feedList.appendChild(card);
+
+    });
+
+  } catch (error) {
+
+    console.error("Erro ao carregar feed:", error);
+
+    feedList.innerHTML =
+      "<p>Erro ao carregar os preços.</p>";
+  }
+}
+
+
+// ========================================
+// SEGURANÇA PARA TEXTOS DO FEED
+// ========================================
+
+function escapeHTML(value) {
+
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 // ========================================
 // PESQUISA
 // ========================================
