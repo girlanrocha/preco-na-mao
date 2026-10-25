@@ -408,3 +408,115 @@ nav {
     padding: 20px;
   }
 }
+/* ========================================
+   VP COMPRAS - FEED MODERNO
+======================================== */
+
+#feedList {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#feedList .post {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #e1eaf5;
+  border-radius: 22px;
+  padding: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 8px 25px rgba(11, 103, 213, 0.10);
+}
+
+/* detalhe azul no topo do card */
+#feedList .post::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(
+    90deg,
+    #0759bd,
+    #2d8cf0
+  );
+}
+
+/* nome do produto */
+#feedList .post strong {
+  display: inline;
+  font-size: 19px;
+  font-weight: 800;
+  color: #172033;
+}
+
+/* preço */
+#feedList .price {
+  display: block;
+  font-size: 31px;
+  line-height: 1.1;
+  font-weight: 900;
+  color: #0b67d5;
+  margin: 12px 0;
+}
+
+/* informações */
+#feedList .post p {
+  margin: 7px 0;
+  font-size: 15px;
+  color: #344054;
+}
+
+/* usuário */
+#feedList .post small {
+  display: block;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #edf1f6;
+  color: #667085;
+  font-size: 13px;
+}
+
+/* efeito ao tocar */
+#feedList .post:active {
+  transform: scale(0.99);
+}
+
+/* melhora o banner principal */
+#feed .hero {
+  position: relative;
+  overflow: hidden;
+  padding: 24px 22px;
+  box-shadow:
+    0 12px 30px rgba(11, 103, 213, 0.18);
+}
+
+#feed .hero::after {
+  content: "💰";
+  position: absolute;
+  right: 18px;
+  bottom: -16px;
+  font-size: 75px;
+  opacity: 0.12;
+  transform: rotate(-10deg);
+}
+
+#feed .hero h2 {
+  font-size: 27px;
+  font-weight: 900;
+}
+
+/* cabeçalho mais destacado */
+header {
+  box-shadow:
+    0 5px 20px rgba(7, 89, 189, 0.20);
+}
+
+.score {
+  font-size: 16px;
+  font-weight: 800;
+  backdrop-filter: blur(5px);
+}
