@@ -1,71 +1,53 @@
-const CACHE_NAME = "vpcompras-v3";
+const CACHE_NAME = "vp-compras-v5";
 
-const STATIC_FILES = [
+const FILES = [
   "/",
   "/index.html",
   "/style.css",
+  "/app.js",
   "/manifest.json"
 ];
 
-// Instala nova versão
 self.addEventListener("install", (event) => {
+  self.skipWaiting();
+
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(STATIC_FILES))
-      .then(() => self.skipWaiting())
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(FILES);
+    })
   );
 });
 
-// Remove caches antigos
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys()
-      .then((keys) =>
-        Promise.all(
-          keys
-            .filter((key) => key !== CACHE_NAME)
-            .map((key) => caches.delete(key))
-        )
-      )
-      .then(() => self.clients.claim())
+    caches.keys().then((names) => {
+      return Promise.all(
+        names
+          .filter((name) => name !== CACHE_NAME)
+          .map((name) => caches.delete(name))
+      );
+    }).then(() => self.clients.claim())
   );
 });
 
-// Busca primeiro a versão atualizada na internet
 self.addEventListener("fetch", (event) => {
-  const request = event.request;
-
-  if (request.method !== "GET") {
+  if (event.request.method !== "GET") {
     return;
   }
 
-  const url = new URL(request.url);
-
-  // API nunca deve usar cache
-  if (url.pathname.startsWith("/api/")) {
-    return;
-  }
-
-  // app.js sempre atualizado
-  if (url.pathname === "/app.js") {
-    event.respondWith(
-      fetch(request, { cache: "no-store" })
-        .catch(() => caches.match(request))
-    );
-    return;
-  }
-
-  // Demais arquivos: tenta internet primeiro
   event.respondWith(
-    fetch(request)
+    fetch(event.request)
       .then((response) => {
         const copy = response.clone();
 
-        caches.open(CACHE_NAME)
-          .then((cache) => cache.put(request, copy));
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, copy);
+        });
 
         return response;
       })
-      .catch(() => caches.match(request))
+      .catch(() => {
+        return caches.match(event.request);
+      })
   );
 });
