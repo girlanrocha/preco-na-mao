@@ -571,3 +571,176 @@ header {
   border-color:#0b67d5;
   color:#fff;
 }
+/* ========================================
+   VP COMPRAS - CABEÇALHO DO POST
+======================================== */
+
+.social-user{
+  display:grid !important;
+  grid-template-columns:44px 1fr auto !important;
+  align-items:center !important;
+  gap:10px !important;
+  padding-bottom:11px !important;
+  border-bottom:1px solid #e7edf5 !important;
+}
+
+.social-avatar{
+  width:42px !important;
+  height:42px !important;
+  min-width:42px !important;
+  border-radius:50% !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  background:linear-gradient(135deg,#0759bd,#2d8cf0) !important;
+  color:#fff !important;
+
+  font-size:17px !important;
+  font-weight:800 !important;
+  line-height:1 !important;
+
+  box-shadow:0 3px 9px rgba(7,89,189,.22);
+}
+
+.social-user-info{
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+  gap:2px !important;
+  min-width:0;
+}
+
+.social-user-info strong{
+  display:block !important;
+  margin:0 !important;
+  padding:0 !important;
+
+  font-size:16px !important;
+  font-weight:800 !important;
+  line-height:1.15 !important;
+  color:#172033 !important;
+}
+
+.social-user-info small{
+  display:block !important;
+  margin:0 !important;
+
+  font-size:11px !important;
+  color:#667085 !important;
+}
+
+.social-category{
+  font-size:11px !important;
+  color:#0759bd !important;
+  background:#eaf3ff !important;
+
+  padding:6px 8px !important;
+  border-radius:12px !important;
+  white-space:nowrap !important;
+}
+
+
+/* PRODUTO */
+
+.social-product{
+  padding-top:11px !important;
+}
+
+.social-product h3{
+  margin:0 0 3px !important;
+  font-size:18px !important;
+  font-weight:800 !important;
+  color:#172033 !important;
+}
+
+.social-product p{
+  margin:2px 0 7px !important;
+  font-size:13px !important;
+  color:#667085 !important;
+}
+
+.social-location{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  gap:8px !important;
+  margin-top:6px !important;
+}
+
+.social-location span{
+  font-size:12px !important;
+  color:#475467 !important;
+}
+
+.social-price{
+  display:block !important;
+  margin-top:7px !important;
+
+  font-size:24px !important;
+  line-height:1 !important;
+  font-weight:900 !important;
+  color:#075fc9 !important;
+}
+
+
+/* AÇÕES TIPO INSTAGRAM */
+
+.instagram-actions{
+  display:flex !important;
+  align-items:center !important;
+  gap:22px !important;
+
+  margin-top:12px !important;
+  padding-top:10px !important;
+
+  border-top:1px solid #e7edf5 !important;
+}
+
+.instagram-actions button{
+  border:0 !important;
+  background:transparent !important;
+  padding:2px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  gap:5px !important;
+
+  color:#172033 !important;
+}
+
+.money-icon{
+  width:27px !important;
+  height:27px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  border:2px solid #172033 !important;
+  border-radius:50% !important;
+
+  font-size:16px !important;
+  font-weight:900 !important;
+}
+
+.comment-icon{
+  font-size:21px !important;
+}
+
+.share-price span{
+  font-size:25px !important;
+}
+
+.instagram-actions b{
+  font-size:12px !important;
+}
+
+
+/* CARD MAIS COMPACTO */
+
+#feedList .price-card{
+  padding:14px !important;
+  margin:10px 0 !important;
+  border-radius:20px !important;
+}
