@@ -744,3 +744,145 @@ header {
   margin:10px 0 !important;
   border-radius:20px !important;
 }
+/* ========================================
+   VP COMPRAS - TELA COMPARAR
+======================================== */
+
+.compare-header{
+  margin-bottom:18px;
+}
+
+.compare-header h2{
+  font-size:25px;
+  margin:0 0 6px;
+  color:#172033;
+}
+
+.compare-header p{
+  margin:0;
+  font-size:13px;
+}
+
+
+/* CESTA BÁSICA */
+
+.basic-basket{
+  background:#fff;
+  border:1px solid #e2eaf4;
+  border-radius:20px;
+  padding:16px;
+  margin-top:8px;
+  box-shadow:0 5px 20px rgba(17,71,128,.07);
+}
+
+.basket-title{
+  margin-bottom:14px;
+}
+
+.basket-title strong{
+  display:block;
+  font-size:17px;
+  color:#172033;
+}
+
+.basket-title small{
+  display:block;
+  margin-top:3px;
+  color:#667085;
+  font-size:12px;
+}
+
+
+/* PRODUTOS */
+
+.product-shortcuts{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px;
+}
+
+.product-shortcuts button{
+  border:1px solid #e1e8f0;
+  background:#f8fbff;
+  border-radius:14px;
+  min-height:75px;
+  padding:8px 4px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+
+  color:#172033;
+  font-size:11px;
+  font-weight:700;
+
+  transition:.15s;
+}
+
+.product-shortcuts button span{
+  font-size:24px;
+}
+
+.product-shortcuts button:active{
+  transform:scale(.95);
+  background:#eaf3ff;
+}
+
+.product-shortcuts button.selected{
+  background:#e7f1ff;
+  border:2px solid #0b67d5;
+  color:#0759bd;
+}
+
+
+/* RESULTADO VAZIO */
+
+.compare-empty{
+  margin-top:16px;
+  padding:28px 15px;
+  text-align:center;
+
+  background:#fff;
+  border:1px solid #e2eaf4;
+  border-radius:20px;
+}
+
+.compare-empty > span{
+  display:block;
+  font-size:38px;
+  margin-bottom:8px;
+}
+
+.compare-empty strong{
+  display:block;
+  font-size:17px;
+  color:#172033;
+}
+
+.compare-empty p{
+  margin:6px 0 0;
+  color:#667085;
+  font-size:12px;
+}
+
+
+/* CELULAR */
+
+@media(max-width:420px){
+
+  .product-shortcuts{
+    grid-template-columns:repeat(4,1fr);
+    gap:6px;
+  }
+
+  .product-shortcuts button{
+    min-height:68px;
+    font-size:10px;
+  }
+
+  .product-shortcuts button span{
+    font-size:21px;
+  }
+}
