@@ -520,3 +520,54 @@ header {
   font-weight: 800;
   backdrop-filter: blur(5px);
 }
+/* ========================================
+   VP COMPRAS - AÇÕES TIPO INSTAGRAM
+======================================== */
+
+.social-actions{
+  display:flex;
+  align-items:center;
+  gap:24px;
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid #edf1f7;
+}
+
+.social-actions button{
+  border:0;
+  background:transparent;
+  padding:0;
+  color:#172033;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.dollar-icon{
+  width:28px;
+  height:28px;
+  border:2px solid #172033;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  font-weight:900;
+}
+
+.comment-icon{
+  font-size:28px;
+  line-height:1;
+}
+
+.share-price{
+  font-size:27px !important;
+}
+
+.price-like.active .dollar-icon{
+  background:#0b67d5;
+  border-color:#0b67d5;
+  color:#fff;
+}
