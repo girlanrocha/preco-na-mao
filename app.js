@@ -651,23 +651,35 @@ async function loadFeed() {
 
           </div>
 
-          <div class="social-actions">
+          <div class="social-actions instagram-actions">
 
-            <button
-              type="button"
-              class="confirm-price"
-            >
-              ✓ Confirmar
-            </button>
+  <button
+    type="button"
+    class="price-like"
+    title="Preço útil"
+  >
+    <span class="money-icon">$</span>
+    <b>0</b>
+  </button>
 
-            <button
-              type="button"
-              class="comment-price"
-            >
-              💬 Comentar
-            </button>
+  <button
+    type="button"
+    class="comment-price"
+    title="Comentar"
+  >
+    <span>💬</span>
+    <b>0</b>
+  </button>
 
-          </div>
+  <button
+    type="button"
+    class="share-price"
+    title="Compartilhar"
+  >
+    <span>➤</span>
+  </button>
+
+</div>
 
         </div>
       `;
