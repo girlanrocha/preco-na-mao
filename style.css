@@ -1016,3 +1016,44 @@ header {
   font-size:12px;
   text-align:center;
 }
+/* ========================================
+   CATEGORIAS DO COMPARADOR
+======================================== */
+
+.compare-categories{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  margin:4px 0 14px;
+  padding:2px 1px 6px;
+  scrollbar-width:none;
+}
+
+.compare-categories::-webkit-scrollbar{
+  display:none;
+}
+
+.compare-cat{
+  min-width:108px;
+  border:1px solid #dbe5f0;
+  background:#fff;
+  border-radius:15px;
+  padding:10px 8px;
+  color:#475467;
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.compare-cat span{
+  display:block;
+  font-size:22px;
+  margin-bottom:4px;
+}
+
+.compare-cat.active{
+  background:#0b67d5;
+  border-color:#0b67d5;
+  color:#fff;
+  box-shadow:0 4px 12px rgba(11,103,213,.22);
+}
