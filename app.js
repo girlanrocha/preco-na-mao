@@ -658,29 +658,14 @@ async function loadFeed() {
 
     </div>
 
-  </div>
-`;
-  <button
-    type="button"
-    class="share-price"
-    title="Compartilhar"
-  >
-    <span>➤</span>
-  </button>
+  
 
-</div>
 
-        </div>
-      `;
-
-      feedList.appendChild(card);
-    });
-
-  } catch (error) {
-    console.error(
-      "Erro ao carregar feed:",
-      error
-    );
+     661    </div>
+662  `;
+663
+664  feedList.appendChild(card);
+665  });
 
     feedList.innerHTML =
       '<p class="empty">Erro ao carregar os preços.</p>';
