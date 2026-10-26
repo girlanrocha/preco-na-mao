@@ -1,273 +1,759 @@
 <!doctype html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0b5ed7">
+
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1,viewport-fit=cover"
+  >
+
+  <meta
+    name="theme-color"
+    content="#0b5ed7"
+  >
+
   <title>VP Compras</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+  <link
+    rel="manifest"
+    href="manifest.json"
+  >
 </head>
+
 
 <body>
 
+
+<!-- =====================================
+     CABEÇALHO
+===================================== -->
+
 <header>
+
   <div>
     <small>Vila Pavão e região</small>
     <h1>VP Compras</h1>
   </div>
 
   <div class="score">
-    ⭐ <b id="topPoints">1000</b>
+    ⭐ <b id="topPoints">0</b>
   </div>
+
 </header>
+
 
 <main>
 
-  <!-- ENTRAR -->
-  <section id="login" class="screen active">
-    <div class="hero">
-      <h2>Bem-vindo ao VP Compras</h2>
-      <p>Compare preços, economize e ajude a comunidade.</p>
-    </div>
 
-    <form id="loginForm">
-      <h2>Entrar</h2>
+<!-- =====================================
+     LOGIN
+===================================== -->
 
-      <label for="loginEmail">E-mail</label>
-      <input
-        id="loginEmail"
-        class="input"
-        type="email"
-        autocomplete="email"
-        placeholder="seuemail@exemplo.com"
-        required
-      >
+<section
+  id="login"
+  class="screen active"
+>
 
-      <label for="loginPassword">Senha</label>
-      <input
-        id="loginPassword"
-        class="input"
-        type="password"
-        autocomplete="current-password"
-        placeholder="Sua senha"
-        required
-      >
+  <div class="hero">
 
-      <button type="submit">Entrar</button>
+    <h2>
+      Bem-vindo ao VP Compras
+    </h2>
 
-      <p>
-        Ainda não tem conta?
-        <button type="button" id="showRegister">Criar conta</button>
-      </p>
-    </form>
-  </section>
-
-  <!-- CADASTRO -->
-  <section id="register" class="screen">
-    <div class="hero">
-      <h2>Criar conta</h2>
-      <p>Cadastre-se gratuitamente no VP Compras.</p>
-    </div>
-
-    <form id="registerForm">
-
-      <label for="registerName">Nome</label>
-      <input
-        id="registerName"
-        class="input"
-        type="text"
-        autocomplete="name"
-        placeholder="Seu nome"
-        required
-      >
-
-      <label for="registerEmail">E-mail</label>
-      <input
-        id="registerEmail"
-        class="input"
-        type="email"
-        autocomplete="email"
-        placeholder="seuemail@exemplo.com"
-        required
-      >
-
-      <label for="registerPassword">Senha</label>
-      <input
-        id="registerPassword"
-        class="input"
-        type="password"
-        autocomplete="new-password"
-        minlength="8"
-        placeholder="Mínimo de 8 caracteres"
-        required
-      >
-
-      <label for="registerCity">Cidade</label>
-      <input
-        id="registerCity"
-        class="input"
-        type="text"
-        value="Vila Pavão"
-        required
-      >
-
-      <button type="submit">Criar minha conta</button>
-
-      <p>
-        Já possui cadastro?
-        <button type="button" id="showLogin">Entrar</button>
-      </p>
-    </form>
-  </section>
-
-  <!-- FEED -->
-  <section id="feed" class="screen">
-    <div class="hero">
-      <h2>Economizar ficou social.</h2>
-      <p>
-        Compare preços, ajude a comunidade e ganhe pontos
-        pelas suas contribuições.
-      </p>
-    </div>
-
-    <div id="feedList"></div>
-  </section>
-
-  <!-- COMPARAR -->
-  <section id="compare" class="screen">
-    <h2>Comparar preços</h2>
-
-    <input
-      id="search"
-      class="input"
-      placeholder="Ex.: arroz, café, fralda..."
-    >
-
-    <div id="compareResults"></div>
-  </section>
-
-  <!-- PUBLICAR -->
-  <section id="publish" class="screen">
-    <h2>Publicar preço</h2>
-
-    <p class="muted">
-      Uma contribuição válida rende <b>+10 pontos</b>.
+    <p>
+      Compare preços, economize e ajude a comunidade.
     </p>
 
-    <form id="priceForm">
+  </div>
 
-      <label for="category">Categoria</label>
-      <select id="category" class="input">
-        <option>Supermercado</option>
-        <option>Farmácia</option>
-      </select>
 
-      <label for="product">Produto</label>
-      <input
-        id="product"
-        class="input"
-        placeholder="Ex.: Arroz"
-        required
+  <form id="loginForm">
+
+    <h2>Entrar</h2>
+
+
+    <label for="loginEmail">
+      E-mail
+    </label>
+
+    <input
+      id="loginEmail"
+      class="input"
+      type="email"
+      autocomplete="email"
+      placeholder="seuemail@exemplo.com"
+      required
+    >
+
+
+    <label for="loginPassword">
+      Senha
+    </label>
+
+    <input
+      id="loginPassword"
+      class="input"
+      type="password"
+      autocomplete="current-password"
+      placeholder="Sua senha"
+      required
+    >
+
+
+    <button
+      type="submit"
+      class="primary"
+    >
+      Entrar
+    </button>
+
+
+    <p>
+      Ainda não tem conta?
+
+      <button
+        type="button"
+        id="showRegister"
+        class="outline"
       >
+        Criar conta
+      </button>
+    </p>
 
-      <label for="brand">Marca / quantidade</label>
-      <input
-        id="brand"
-        class="input"
-        placeholder="Ex.: Tipo 1 • 5 kg"
+  </form>
+
+</section>
+
+
+
+<!-- =====================================
+     CADASTRO
+===================================== -->
+
+<section
+  id="register"
+  class="screen"
+>
+
+  <div class="hero">
+
+    <h2>
+      Criar conta
+    </h2>
+
+    <p>
+      Cadastre-se gratuitamente no VP Compras.
+    </p>
+
+  </div>
+
+
+  <form id="registerForm">
+
+
+    <label for="registerName">
+      Nome
+    </label>
+
+    <input
+      id="registerName"
+      class="input"
+      type="text"
+      autocomplete="name"
+      placeholder="Seu nome"
+      required
+    >
+
+
+    <label for="registerEmail">
+      E-mail
+    </label>
+
+    <input
+      id="registerEmail"
+      class="input"
+      type="email"
+      autocomplete="email"
+      placeholder="seuemail@exemplo.com"
+      required
+    >
+
+
+    <label for="registerPassword">
+      Senha
+    </label>
+
+    <input
+      id="registerPassword"
+      class="input"
+      type="password"
+      autocomplete="new-password"
+      minlength="8"
+      placeholder="Mínimo de 8 caracteres"
+      required
+    >
+
+
+    <label for="registerCity">
+      Cidade
+    </label>
+
+    <input
+      id="registerCity"
+      class="input"
+      type="text"
+      value="Vila Pavão"
+      required
+    >
+
+
+    <button
+      type="submit"
+      class="primary"
+    >
+      Criar minha conta
+    </button>
+
+
+    <p>
+      Já possui cadastro?
+
+      <button
+        type="button"
+        id="showLogin"
+        class="outline"
       >
+        Entrar
+      </button>
+    </p>
 
-      <label for="store">Estabelecimento</label>
-      <input
-        id="store"
-        class="input"
-        placeholder="Nome do estabelecimento"
-        required
-      >
+  </form>
 
-      <label for="price">Preço</label>
-      <input
-        id="price"
-        class="input"
-        type="number"
-        min="0.01"
-        step="0.01"
-        placeholder="0,00"
-        required
-      >
+</section>
 
-      <button type="submit">Publicar preço</button>
-    </form>
-  </section>
 
-  <!-- PONTOS -->
-  <section id="points" class="screen">
-    <div class="points-card">
-      <span>Seu saldo</span>
-      <strong>⭐ <span id="pointsBalance">1000</span></strong>
-    </div>
 
-    <h2>Recompensas</h2>
+<!-- =====================================
+     FEED
+===================================== -->
 
-    <article class="reward">
-      <h3>🪥 Escova de dentes</h3>
-      <p>Troque seus pontos por uma escova de dentes.</p>
-      <strong>1.000 pontos</strong>
-    </article>
-  </section>
+<section
+  id="feed"
+  class="screen"
+>
 
-  <!-- PERFIL -->
-  <section id="profile" class="screen">
-    <div class="profile">
-      <div class="avatar">VP</div>
+  <div class="hero">
 
-      <h2 id="profileName">Meu perfil</h2>
-      <p id="profileInfo">Vila Pavão</p>
+    <h2>
+      Economizar ficou social.
+    </h2>
+
+    <p>
+      Compare preços, ajude a comunidade e ganhe pontos
+      pelas suas contribuições.
+    </p>
+
+  </div>
+
+
+  <div id="feedList"></div>
+
+</section>
+
+
+
+<!-- =====================================
+     COMPARAR
+===================================== -->
+
+<section
+  id="compare"
+  class="screen"
+>
+
+
+  <div class="compare-header">
+
+    <h2>
+      🔎 Comparar preços
+    </h2>
+
+    <p class="muted">
+      Descubra onde está mais barato.
+    </p>
+
+  </div>
+
+
+  <!-- PESQUISA -->
+
+  <input
+    id="search"
+    class="input"
+    type="search"
+    placeholder="🔎 Buscar produto..."
+    autocomplete="off"
+  >
+
+
+  <!-- CESTA BÁSICA -->
+
+  <div class="basic-basket">
+
+
+    <div class="basket-title">
 
       <div>
-        <strong id="profilePoints">1000</strong>
-        <span> pontos</span>
+
+        <strong>
+          🧺 Cesta básica
+        </strong>
+
+        <small>
+          Toque em um produto para comparar
+        </small>
+
       </div>
 
-      <button id="logoutButton" type="button">
-        Sair da conta
-      </button>
     </div>
-  </section>
+
+
+    <div class="product-shortcuts">
+
+
+      <button
+        type="button"
+        data-product="Arroz"
+      >
+        <span>🍚</span>
+        Arroz
+      </button>
+
+
+      <button
+        type="button"
+        data-product="Feijão"
+      >
+        <span>🫘</span>
+        Feijão
+      </button>
+
+
+      <button
+        type="button"
+        data-product="Café"
+      >
+        <span>☕</span>
+        Café
+      </button>
+
+
+      <button
+        type="button"
+        data-product="Açúcar"
+      >
+        <span>🧂</span>
+        Açúcar
+      </button>
+
+
+      <button
+        type="button"
+        data-product="Óleo"
+      >
+        <span>🫗</span>
+        Óleo
+      </button>
+
+
+      <button
+        type="button"
+        data-product="Leite"
+      >
+        <span>🥛</span>
+        Leite
+      </button>
+
+
+      <button
+        type="button"
+        data-product="Macarrão"
+      >
+        <span>🍝</span>
+        Macarrão
+      </button>
+
+
+      <button
+        type="button"
+        data-product="Farinha"
+      >
+        <span>🌾</span>
+        Farinha
+      </button>
+
+
+    </div>
+
+  </div>
+
+
+
+  <!-- RESULTADOS DA COMPARAÇÃO -->
+
+  <div id="compareResults">
+
+    <div class="compare-empty">
+
+      <span>
+        💰
+      </span>
+
+      <strong>
+        Encontre o menor preço
+      </strong>
+
+      <p>
+        Escolha um produto acima ou faça uma busca.
+      </p>
+
+    </div>
+
+  </div>
+
+
+</section>
+
+
+
+<!-- =====================================
+     PUBLICAR PREÇO
+===================================== -->
+
+<section
+  id="publish"
+  class="screen"
+>
+
+  <h2>
+    Publicar preço
+  </h2>
+
+
+  <p class="muted">
+    Uma contribuição válida rende
+    <b>+10 pontos</b>.
+  </p>
+
+
+  <form id="priceForm">
+
+
+    <label for="category">
+      Categoria
+    </label>
+
+    <select
+      id="category"
+      class="input"
+    >
+
+      <option>
+        Supermercado
+      </option>
+
+      <option>
+        Farmácia
+      </option>
+
+    </select>
+
+
+    <label for="product">
+      Produto
+    </label>
+
+    <input
+      id="product"
+      class="input"
+      placeholder="Ex.: Arroz"
+      required
+    >
+
+
+    <label for="brand">
+      Marca / quantidade
+    </label>
+
+    <input
+      id="brand"
+      class="input"
+      placeholder="Ex.: Tipo 1 • 5 kg"
+    >
+
+
+    <label for="store">
+      Estabelecimento
+    </label>
+
+    <input
+      id="store"
+      class="input"
+      placeholder="Nome do estabelecimento"
+      required
+    >
+
+
+    <label for="price">
+      Preço
+    </label>
+
+    <input
+      id="price"
+      class="input"
+      type="number"
+      min="0.01"
+      step="0.01"
+      placeholder="0,00"
+      required
+    >
+
+
+    <button
+      type="submit"
+      class="primary"
+    >
+      Publicar preço
+    </button>
+
+
+  </form>
+
+</section>
+
+
+
+<!-- =====================================
+     PONTOS
+===================================== -->
+
+<section
+  id="points"
+  class="screen"
+>
+
+
+  <div class="points-card">
+
+    <span>
+      Seu saldo
+    </span>
+
+    <strong>
+      ⭐
+      <span id="pointsBalance">
+        0
+      </span>
+    </strong>
+
+  </div>
+
+
+  <h2>
+    Recompensas
+  </h2>
+
+
+  <article class="reward">
+
+    <div class="reward-icon">
+      🪥
+    </div>
+
+    <div>
+
+      <h3>
+        Escova de dentes
+      </h3>
+
+      <p>
+        Troque seus pontos por uma escova de dentes.
+      </p>
+
+      <strong>
+        1.000 pontos
+      </strong>
+
+    </div>
+
+  </article>
+
+
+</section>
+
+
+
+<!-- =====================================
+     PERFIL
+===================================== -->
+
+<section
+  id="profile"
+  class="screen"
+>
+
+
+  <div class="profile">
+
+
+    <div class="avatar">
+      VP
+    </div>
+
+
+    <h2 id="profileName">
+      Meu perfil
+    </h2>
+
+
+    <p id="profileInfo">
+      Vila Pavão
+    </p>
+
+
+    <div class="stats">
+
+      <div>
+
+        <b id="profilePoints">
+          0
+        </b>
+
+        <span>
+          pontos
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <button
+      id="logoutButton"
+      type="button"
+      class="outline"
+    >
+      Sair da conta
+    </button>
+
+
+  </div>
+
+</section>
+
 
 </main>
 
+
+
+<!-- =====================================
+     MENU INFERIOR
+===================================== -->
+
 <nav id="mainNav">
-  <button data-screen="feed" class="nav on">
-    <span>🏠</span>
+
+
+  <button
+    data-screen="feed"
+    class="nav on"
+  >
+
+    <span>
+      🏠
+    </span>
+
     Feed
+
   </button>
 
-  <button data-screen="compare" class="nav">
-    <span>🔎</span>
+
+  <button
+    data-screen="compare"
+    class="nav"
+  >
+
+    <span>
+      🔎
+    </span>
+
     Comparar
+
   </button>
 
-  <button data-screen="publish" class="nav">
-    <span>➕</span>
+
+  <button
+    data-screen="publish"
+    class="nav add"
+  >
+
+    <span>
+      ＋
+    </span>
+
     Publicar
+
   </button>
 
-  <button data-screen="points" class="nav">
-    <span>⭐</span>
+
+  <button
+    data-screen="points"
+    class="nav"
+  >
+
+    <span>
+      ⭐
+    </span>
+
     Pontos
+
   </button>
 
-  <button data-screen="profile" class="nav">
-    <span>👤</span>
+
+  <button
+    data-screen="profile"
+    class="nav"
+  >
+
+    <span>
+      👤
+    </span>
+
     Perfil
+
   </button>
+
+
 </nav>
+
+
+
+<!-- MENSAGENS -->
 
 <div id="toast"></div>
 
+
+
+<!-- JAVASCRIPT -->
+
 <script src="app.js"></script>
+
 
 </body>
 </html>
