@@ -9,31 +9,17 @@
     content="width=device-width,initial-scale=1,viewport-fit=cover"
   >
 
-  <meta
-    name="theme-color"
-    content="#0b5ed7"
-  >
+  <meta name="theme-color" content="#0b5ed7">
 
   <title>VP Compras</title>
 
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
-
-  <link
-    rel="manifest"
-    href="manifest.json"
-  >
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
 </head>
-
 
 <body>
 
-
-<!-- =====================================
-     CABEÇALHO
-===================================== -->
+<!-- CABEÇALHO -->
 
 <header>
 
@@ -56,32 +42,18 @@
      LOGIN
 ===================================== -->
 
-<section
-  id="login"
-  class="screen active"
->
+<section id="login" class="screen active">
 
   <div class="hero">
-
-    <h2>
-      Bem-vindo ao VP Compras
-    </h2>
-
-    <p>
-      Compare preços, economize e ajude a comunidade.
-    </p>
-
+    <h2>Bem-vindo ao VP Compras</h2>
+    <p>Compare preços, economize e ajude a comunidade.</p>
   </div>
-
 
   <form id="loginForm">
 
     <h2>Entrar</h2>
 
-
-    <label for="loginEmail">
-      E-mail
-    </label>
+    <label for="loginEmail">E-mail</label>
 
     <input
       id="loginEmail"
@@ -92,10 +64,7 @@
       required
     >
 
-
-    <label for="loginPassword">
-      Senha
-    </label>
+    <label for="loginPassword">Senha</label>
 
     <input
       id="loginPassword"
@@ -106,14 +75,9 @@
       required
     >
 
-
-    <button
-      type="submit"
-      class="primary"
-    >
+    <button type="submit" class="primary">
       Entrar
     </button>
-
 
     <p>
       Ainda não tem conta?
@@ -132,35 +96,20 @@
 </section>
 
 
-
 <!-- =====================================
      CADASTRO
 ===================================== -->
 
-<section
-  id="register"
-  class="screen"
->
+<section id="register" class="screen">
 
   <div class="hero">
-
-    <h2>
-      Criar conta
-    </h2>
-
-    <p>
-      Cadastre-se gratuitamente no VP Compras.
-    </p>
-
+    <h2>Criar conta</h2>
+    <p>Cadastre-se gratuitamente no VP Compras.</p>
   </div>
-
 
   <form id="registerForm">
 
-
-    <label for="registerName">
-      Nome
-    </label>
+    <label for="registerName">Nome</label>
 
     <input
       id="registerName"
@@ -171,10 +120,7 @@
       required
     >
 
-
-    <label for="registerEmail">
-      E-mail
-    </label>
+    <label for="registerEmail">E-mail</label>
 
     <input
       id="registerEmail"
@@ -185,10 +131,7 @@
       required
     >
 
-
-    <label for="registerPassword">
-      Senha
-    </label>
+    <label for="registerPassword">Senha</label>
 
     <input
       id="registerPassword"
@@ -200,10 +143,7 @@
       required
     >
 
-
-    <label for="registerCity">
-      Cidade
-    </label>
+    <label for="registerCity">Cidade</label>
 
     <input
       id="registerCity"
@@ -213,14 +153,9 @@
       required
     >
 
-
-    <button
-      type="submit"
-      class="primary"
-    >
+    <button type="submit" class="primary">
       Criar minha conta
     </button>
-
 
     <p>
       Já possui cadastro?
@@ -239,21 +174,15 @@
 </section>
 
 
-
 <!-- =====================================
      FEED
 ===================================== -->
 
-<section
-  id="feed"
-  class="screen"
->
+<section id="feed" class="screen">
 
   <div class="hero">
 
-    <h2>
-      Economizar ficou social.
-    </h2>
+    <h2>Economizar ficou social.</h2>
 
     <p>
       Compare preços, ajude a comunidade e ganhe pontos
@@ -262,28 +191,20 @@
 
   </div>
 
-
   <div id="feedList"></div>
 
 </section>
-
 
 
 <!-- =====================================
      COMPARAR
 ===================================== -->
 
-<section
-  id="compare"
-  class="screen"
->
-
+<section id="compare" class="screen">
 
   <div class="compare-header">
 
-    <h2>
-      🔎 Comparar preços
-    </h2>
+    <h2>🔎 Comparar preços</h2>
 
     <p class="muted">
       Descubra onde está mais barato.
@@ -292,7 +213,7 @@
   </div>
 
 
-  <!-- PESQUISA -->
+  <!-- BUSCA -->
 
   <input
     id="search"
@@ -303,30 +224,65 @@
   >
 
 
+  <!-- CATEGORIAS -->
+
+  <div class="compare-categories">
+
+    <button
+      type="button"
+      class="compare-cat active"
+      data-category="cesta"
+    >
+      <span>🧺</span>
+      Cesta básica
+    </button>
+
+    <button
+      type="button"
+      class="compare-cat"
+      data-category="farmacia"
+    >
+      <span>💊</span>
+      Farmácia
+    </button>
+
+    <button
+      type="button"
+      class="compare-cat"
+      data-category="combustiveis"
+    >
+      <span>⛽</span>
+      Combustíveis
+    </button>
+
+    <button
+      type="button"
+      class="compare-cat"
+      data-category="construcao"
+    >
+      <span>🧱</span>
+      Construção
+    </button>
+
+  </div>
+
+
   <!-- CESTA BÁSICA -->
 
   <div class="basic-basket">
 
-
     <div class="basket-title">
 
-      <div>
+      <strong>🧺 Cesta básica</strong>
 
-        <strong>
-          🧺 Cesta básica
-        </strong>
-
-        <small>
-          Toque em um produto para comparar
-        </small>
-
-      </div>
+      <small>
+        Toque em um produto para comparar
+      </small>
 
     </div>
 
 
     <div class="product-shortcuts">
-
 
       <button
         type="button"
@@ -399,22 +355,18 @@
         Farinha
       </button>
 
-
     </div>
 
   </div>
 
 
-
-  <!-- RESULTADOS DA COMPARAÇÃO -->
+  <!-- RESULTADOS -->
 
   <div id="compareResults">
 
     <div class="compare-empty">
 
-      <span>
-        💰
-      </span>
+      <span>💰</span>
 
       <strong>
         Encontre o menor preço
@@ -428,24 +380,16 @@
 
   </div>
 
-
 </section>
 
 
-
 <!-- =====================================
-     PUBLICAR PREÇO
+     PUBLICAR
 ===================================== -->
 
-<section
-  id="publish"
-  class="screen"
->
+<section id="publish" class="screen">
 
-  <h2>
-    Publicar preço
-  </h2>
-
+  <h2>Publicar preço</h2>
 
   <p class="muted">
     Uma contribuição válida rende
@@ -455,7 +399,6 @@
 
   <form id="priceForm">
 
-
     <label for="category">
       Categoria
     </label>
@@ -464,15 +407,10 @@
       id="category"
       class="input"
     >
-
-      <option>
-        Supermercado
-      </option>
-
-      <option>
-        Farmácia
-      </option>
-
+      <option>Supermercado</option>
+      <option>Farmácia</option>
+      <option>Combustível</option>
+      <option>Material de construção</option>
     </select>
 
 
@@ -533,42 +471,29 @@
       Publicar preço
     </button>
 
-
   </form>
 
 </section>
-
 
 
 <!-- =====================================
      PONTOS
 ===================================== -->
 
-<section
-  id="points"
-  class="screen"
->
-
+<section id="points" class="screen">
 
   <div class="points-card">
 
-    <span>
-      Seu saldo
-    </span>
+    <span>Seu saldo</span>
 
     <strong>
-      ⭐
-      <span id="pointsBalance">
-        0
-      </span>
+      ⭐ <span id="pointsBalance">0</span>
     </strong>
 
   </div>
 
 
-  <h2>
-    Recompensas
-  </h2>
+  <h2>Recompensas</h2>
 
 
   <article class="reward">
@@ -579,9 +504,7 @@
 
     <div>
 
-      <h3>
-        Escova de dentes
-      </h3>
+      <h3>Escova de dentes</h3>
 
       <p>
         Troque seus pontos por uma escova de dentes.
@@ -595,33 +518,24 @@
 
   </article>
 
-
 </section>
-
 
 
 <!-- =====================================
      PERFIL
 ===================================== -->
 
-<section
-  id="profile"
-  class="screen"
->
-
+<section id="profile" class="screen">
 
   <div class="profile">
-
 
     <div class="avatar">
       VP
     </div>
 
-
     <h2 id="profileName">
       Meu perfil
     </h2>
-
 
     <p id="profileInfo">
       Vila Pavão
@@ -653,7 +567,6 @@
       Sair da conta
     </button>
 
-
   </div>
 
 </section>
@@ -662,25 +575,18 @@
 </main>
 
 
-
 <!-- =====================================
      MENU INFERIOR
 ===================================== -->
 
 <nav id="mainNav">
 
-
   <button
     data-screen="feed"
     class="nav on"
   >
-
-    <span>
-      🏠
-    </span>
-
+    <span>🏠</span>
     Feed
-
   </button>
 
 
@@ -688,13 +594,8 @@
     data-screen="compare"
     class="nav"
   >
-
-    <span>
-      🔎
-    </span>
-
+    <span>🔎</span>
     Comparar
-
   </button>
 
 
@@ -702,13 +603,8 @@
     data-screen="publish"
     class="nav add"
   >
-
-    <span>
-      ＋
-    </span>
-
+    <span>＋</span>
     Publicar
-
   </button>
 
 
@@ -716,13 +612,8 @@
     data-screen="points"
     class="nav"
   >
-
-    <span>
-      ⭐
-    </span>
-
+    <span>⭐</span>
     Pontos
-
   </button>
 
 
@@ -730,30 +621,17 @@
     data-screen="profile"
     class="nav"
   >
-
-    <span>
-      👤
-    </span>
-
+    <span>👤</span>
     Perfil
-
   </button>
-
 
 </nav>
 
 
-
-<!-- MENSAGENS -->
-
 <div id="toast"></div>
 
 
-
-<!-- JAVASCRIPT -->
-
 <script src="app.js"></script>
-
 
 </body>
 </html>
