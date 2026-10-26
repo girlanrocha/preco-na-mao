@@ -886,3 +886,133 @@ header {
     font-size:21px;
   }
 }
+/* ========================================
+   RESULTADOS - COMPARAR PREÇOS
+======================================== */
+
+.comparison-title{
+  margin:20px 2px 10px;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  font-size:13px;
+  color:#667085;
+}
+
+.comparison-title strong{
+  color:#172033;
+  font-size:16px;
+}
+
+/* CARD DO MENOR PREÇO */
+
+.cheapest-card{
+  background:#fff;
+  border:2px solid #16a34a;
+  border-radius:20px;
+  padding:16px;
+  box-shadow:0 6px 20px rgba(22,163,74,.10);
+}
+
+.cheapest-badge{
+  display:inline-block;
+  background:#dcfce7;
+  color:#15803d;
+  padding:6px 10px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:800;
+  margin-bottom:12px;
+}
+
+.cheapest-product{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.cheapest-product h3{
+  margin:0;
+  font-size:19px;
+  color:#172033;
+}
+
+.cheapest-product p{
+  margin:4px 0 0;
+  color:#667085;
+  font-size:13px;
+}
+
+.cheapest-price{
+  color:#15803d;
+  font-size:27px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.cheapest-store{
+  border-top:1px solid #e5e7eb;
+  margin-top:14px;
+  padding-top:12px;
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  font-size:13px;
+  color:#475467;
+}
+
+/* OUTROS PREÇOS */
+
+.other-prices{
+  margin-top:18px;
+}
+
+.other-prices h3{
+  font-size:15px;
+  margin:0 0 9px;
+}
+
+.comparison-price-card{
+  background:#fff;
+  border:1px solid #e1e8f0;
+  border-radius:15px;
+  padding:13px 14px;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.comparison-store{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.comparison-store strong{
+  font-size:14px;
+}
+
+.comparison-store small{
+  color:#667085;
+  font-size:11px;
+}
+
+.comparison-value{
+  font-size:19px;
+  color:#0b67d5;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.only-price{
+  margin-top:10px;
+  background:#f8fafc;
+  border-radius:12px;
+  padding:10px;
+  color:#667085;
+  font-size:12px;
+  text-align:center;
+}
