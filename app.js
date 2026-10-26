@@ -204,8 +204,7 @@ if (registerForm) {
             method: "POST",
 
             headers: {
-              "Content-Type":
-                "application/json"
+              "Content-Type": "application/json"
             },
 
             credentials: "include",
@@ -243,7 +242,10 @@ if (registerForm) {
         openScreen("login");
 
       } catch (error) {
-        console.error(error);
+        console.error(
+          "Erro no cadastro:",
+          error
+        );
 
         toast(
           "Erro de conexão. Tente novamente."
@@ -586,86 +588,98 @@ async function loadFeed() {
           .charAt(0)
           .toUpperCase();
 
-      
       card.innerHTML = `
-  <div class="social-post">
+        <div class="social-post">
 
-    <div class="social-user">
+          <div class="social-user">
 
-      <div class="social-avatar">
-        ${escapeHTML(initial)}
-      </div>
+            <div class="social-avatar">
+              ${escapeHTML(initial)}
+            </div>
 
-      <div class="social-user-info">
-        <strong>${escapeHTML(firstName)}</strong>
-        <small>publicou um preço</small>
-      </div>
+            <div class="social-user-info">
+              <strong>
+                ${escapeHTML(firstName)}
+              </strong>
+              <small>publicou um preço</small>
+            </div>
 
-      <span class="social-category">
-        🛒 ${escapeHTML(item.category || "")}
-      </span>
+            <span class="social-category">
+              🛒 ${escapeHTML(item.category || "")}
+            </span>
 
-    </div>
+          </div>
 
-    <div class="social-product">
+          <div class="social-product">
 
-      <h3>${escapeHTML(item.product)}</h3>
+            <h3>
+              ${escapeHTML(item.product)}
+            </h3>
 
-      ${
-        item.brand
-          ? `<p>${escapeHTML(item.brand)}</p>`
-          : ""
-      }
+            ${
+              item.brand
+                ? `<p>${escapeHTML(item.brand)}</p>`
+                : ""
+            }
 
-      <div class="social-location">
-        <span>🏪 ${escapeHTML(item.store)}</span>
-        <span>📍 ${escapeHTML(item.city || "")}</span>
-      </div>
+            <div class="social-location">
+              <span>
+                🏪 ${escapeHTML(item.store)}
+              </span>
 
-      <strong class="social-price">
-        ${formattedPrice}
-      </strong>
+              <span>
+                📍 ${escapeHTML(item.city || "")}
+              </span>
+            </div>
 
-    </div>
+            <strong class="social-price">
+              ${formattedPrice}
+            </strong>
 
-    <div class="social-actions instagram-actions">
+          </div>
 
-      <button
-        type="button"
-        class="price-like"
-        title="Confirmar este preço"
-      >
-        <span class="money-icon">$</span>
-        <b>0</b>
-      </button>
+          <div class="social-actions instagram-actions">
 
-      <button
-        type="button"
-        class="comment-price"
-        title="Comentar"
-      >
-        <span class="comment-icon">💬</span>
-        <b>0</b>
-      </button>
+            <button
+              type="button"
+              class="price-like"
+              title="Preço confirmado"
+            >
+              <span class="money-icon">$</span>
+              <b>0</b>
+            </button>
 
-      <button
-        type="button"
-        class="share-price"
-        title="Compartilhar"
-      >
-        <span>➤</span>
-      </button>
+            <button
+              type="button"
+              class="comment-price"
+              title="Comentar"
+            >
+              <span class="comment-icon">💬</span>
+              <b>0</b>
+            </button>
 
-    </div>
+            <button
+              type="button"
+              class="share-price"
+              title="Compartilhar"
+            >
+              <span>➤</span>
+            </button>
 
-  
+          </div>
 
+        </div>
+      `;
 
-     661    </div>
-662  `;
-663
-664  feedList.appendChild(card);
-665  });
+      feedList.appendChild(card);
+    });
+
+  } catch (error) {
+
+    console.error(
+      "Erro ao carregar feed:",
+      error
+    );
 
     feedList.innerHTML =
       '<p class="empty">Erro ao carregar os preços.</p>';
@@ -674,7 +688,7 @@ async function loadFeed() {
 
 
 // ========================================
-// PESQUISA
+// PESQUISA / COMPARAÇÃO
 // ========================================
 
 const search = $("#search");
@@ -684,9 +698,10 @@ if (search) {
     "input",
     async () => {
 
-      // Na próxima etapa esta área
-      // será usada para comparar produtos
-      // e mostrar o menor preço.
+      // Próxima etapa:
+      // buscar arroz, feijão, café etc.
+      // e mostrar os estabelecimentos
+      // começando pelo menor preço.
 
     }
   );
