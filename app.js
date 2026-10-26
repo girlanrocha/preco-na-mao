@@ -586,91 +586,80 @@ async function loadFeed() {
           .charAt(0)
           .toUpperCase();
 
+      
       card.innerHTML = `
-        <div class="social-post">
+  <div class="social-post">
 
-          <div class="social-user">
+    <div class="social-user">
 
-            <div class="social-avatar">
-              ${escapeHTML(initial)}
-            </div>
+      <div class="social-avatar">
+        ${escapeHTML(initial)}
+      </div>
 
-            <div class="social-user-info">
-              <strong>
-                ${escapeHTML(firstName)}
-              </strong>
+      <div class="social-user-info">
+        <strong>${escapeHTML(firstName)}</strong>
+        <small>publicou um preço</small>
+      </div>
 
-              <small>
-                publicou um preço
-              </small>
-            </div>
+      <span class="social-category">
+        🛒 ${escapeHTML(item.category || "")}
+      </span>
 
-            <span class="social-category">
-              🛒 ${escapeHTML(
-                item.category || ""
-              )}
-            </span>
+    </div>
 
-          </div>
+    <div class="social-product">
 
-          <div class="social-product">
+      <h3>${escapeHTML(item.product)}</h3>
 
-            <div class="social-product-info">
+      ${
+        item.brand
+          ? `<p>${escapeHTML(item.brand)}</p>`
+          : ""
+      }
 
-              <h3>
-                ${escapeHTML(item.product)}
-              </h3>
+      <div class="social-location">
+        <span>🏪 ${escapeHTML(item.store)}</span>
+        <span>📍 ${escapeHTML(item.city || "")}</span>
+      </div>
 
-              ${
-                item.brand
-                  ? `
-                    <p>
-                      ${escapeHTML(
-                        item.brand
-                      )}
-                    </p>
-                  `
-                  : ""
-              }
+      <strong class="social-price">
+        ${formattedPrice}
+      </strong>
 
-              <span>
-                🏪 ${escapeHTML(item.store)}
-              </span>
+    </div>
 
-              <span>
-                📍 ${escapeHTML(
-                  item.city || ""
-                )}
-              </span>
+    <div class="social-actions instagram-actions">
 
-            </div>
+      <button
+        type="button"
+        class="price-like"
+        title="Confirmar este preço"
+      >
+        <span class="money-icon">$</span>
+        <b>0</b>
+      </button>
 
-            <strong class="social-price">
-              ${formattedPrice}
-            </strong>
+      <button
+        type="button"
+        class="comment-price"
+        title="Comentar"
+      >
+        <span class="comment-icon">💬</span>
+        <b>0</b>
+      </button>
 
-          </div>
+      <button
+        type="button"
+        class="share-price"
+        title="Compartilhar"
+      >
+        <span>➤</span>
+      </button>
 
-          <div class="social-actions instagram-actions">
+    </div>
 
-  <button
-    type="button"
-    class="price-like"
-    title="Preço útil"
-  >
-    <span class="money-icon">$</span>
-    <b>0</b>
-  </button>
-
-  <button
-    type="button"
-    class="comment-price"
-    title="Comentar"
-  >
-    <span>💬</span>
-    <b>0</b>
-  </button>
-
+  </div>
+`;
   <button
     type="button"
     class="share-price"
