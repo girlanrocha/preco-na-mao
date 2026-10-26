@@ -1125,7 +1125,208 @@ if (search) {
 
 }
 
+// ========================================
+// CATEGORIAS DO COMPARADOR
+// ========================================
 
+const compareCategories = $$(".compare-cat");
+const shortcutsContainer = $(".product-shortcuts");
+const basketTitle = $(".basket-title strong");
+const basketDescription = $(".basket-title small");
+
+const categoryProducts = {
+
+  cesta: {
+    title: "🧺 Cesta básica",
+    products: [
+      ["🍚", "Arroz"],
+      ["●", "Feijão"],
+      ["☕", "Café"],
+      ["🧂", "Açúcar"],
+      ["💧", "Óleo"],
+      ["🥛", "Leite"],
+      ["🍝", "Macarrão"],
+      ["🌾", "Farinha"]
+    ]
+  },
+
+  farmacia: {
+    title: "💊 Farmácia",
+    products: [
+      ["💊", "Dipirona"],
+      ["💊", "Paracetamol"],
+      ["🩹", "Curativo"],
+      ["🧴", "Shampoo"],
+      ["🪥", "Creme dental"],
+      ["🧼", "Sabonete"],
+      ["👶", "Fralda"],
+      ["🧻", "Papel higiênico"]
+    ]
+  },
+
+  combustiveis: {
+    title: "⛽ Combustíveis",
+    products: [
+      ["⛽", "Gasolina comum"],
+      ["⛽", "Gasolina aditivada"],
+      ["🌱", "Etanol"],
+      ["🚛", "Diesel S10"]
+    ]
+  },
+
+  construcao: {
+    title: "🧱 Construção",
+    products: [
+      ["🏗️", "Cimento"],
+      ["🧱", "Tijolo"],
+      ["🏠", "Telha"],
+      ["🪣", "Tinta"],
+      ["🏗️", "Argamassa"],
+      ["⛰️", "Areia"],
+      ["🪨", "Brita"],
+      ["🔩", "Vergalhão"]
+    ]
+  }
+
+};
+
+
+function resetCompareResults() {
+
+  if (!compareResults) return;
+
+  compareResults.innerHTML = `
+    <div class="compare-empty">
+      <span>💰</span>
+
+      <strong>
+        Encontre o menor preço
+      </strong>
+
+      <p>
+        Escolha um produto acima ou faça uma busca.
+      </p>
+    </div>
+  `;
+}
+
+
+function renderCategory(category) {
+
+  const data = categoryProducts[category];
+
+  if (!data || !shortcutsContainer) {
+    return;
+  }
+
+
+  // Troca título
+
+  if (basketTitle) {
+    basketTitle.textContent = data.title;
+  }
+
+  if (basketDescription) {
+    basketDescription.textContent =
+      "Toque em um produto para comparar";
+  }
+
+
+  // Limpa produtos anteriores
+
+  shortcutsContainer.innerHTML = "";
+
+
+  // Cria novos produtos
+
+  data.products.forEach(([icon, productName]) => {
+
+    const button =
+      document.createElement("button");
+
+    button.type = "button";
+
+    button.dataset.product =
+      productName;
+
+    button.innerHTML = `
+      <span>${icon}</span>
+      ${escapeHTML(productName)}
+    `;
+
+
+    // Clique no produto
+
+    button.addEventListener(
+      "click",
+      async () => {
+
+        shortcutsContainer
+          .querySelectorAll("button")
+          .forEach((item) => {
+            item.classList.remove("selected");
+          });
+
+
+        button.classList.add("selected");
+
+
+        if (search) {
+          search.value = productName;
+        }
+
+
+        await compareProduct(productName);
+
+      }
+    );
+
+
+    shortcutsContainer.appendChild(button);
+
+  });
+
+
+  // Limpa busca
+
+  if (search) {
+    search.value = "";
+  }
+
+
+  resetCompareResults();
+
+}
+
+
+// ========================================
+// CLIQUE NAS CATEGORIAS
+// ========================================
+
+compareCategories.forEach((button) => {
+
+  button.addEventListener(
+    "click",
+    () => {
+
+      compareCategories.forEach((item) => {
+        item.classList.remove("active");
+      });
+
+
+      button.classList.add("active");
+
+
+      const category =
+        button.dataset.category;
+
+
+      renderCategory(category);
+
+    }
+  );
+
+});
 // ========================================
 // SERVICE WORKER
 // ========================================
