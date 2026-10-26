@@ -692,19 +692,437 @@ async function loadFeed() {
 // ========================================
 
 const search = $("#search");
+const compareResults = $("#compareResults");
+const productShortcuts = $$(".product-shortcuts button");
 
-if (search) {
-  search.addEventListener(
-    "input",
+
+// Formata valor em Real
+function formatBRL(value) {
+  return Number(value || 0).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
+}
+
+
+// Normaliza texto para facilitar a pesquisa
+function normalizeText(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+
+// ========================================
+// MOSTRAR PREÇOS DE UM PRODUTO
+// ========================================
+
+async function compareProduct(productName) {
+
+  if (!compareResults) {
+    return;
+  }
+
+  const term = normalizeText(productName);
+
+  if (!term) {
+
+    compareResults.innerHTML = `
+      <div class="compare-empty">
+        <span>💰</span>
+        <strong>Encontre o menor preço</strong>
+        <p>
+          Escolha um produto acima ou faça uma busca.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+
+  compareResults.innerHTML = `
+    <div class="compare-empty">
+      <span>🔎</span>
+      <strong>Procurando preços...</strong>
+      <p>
+        Aguarde um instante.
+      </p>
+    </div>
+  `;
+
+
+  try {
+
+    const response = await fetch("/api/prices", {
+      method: "GET",
+      credentials: "include"
+    });
+
+
+    const data = await response.json();
+
+
+    if (!response.ok || !data.ok) {
+
+      compareResults.innerHTML = `
+        <div class="compare-empty">
+          <span>⚠️</span>
+          <strong>Não foi possível comparar</strong>
+          <p>
+            Tente novamente.
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+
+    const prices = Array.isArray(data.prices)
+      ? data.prices
+      : [];
+
+
+    // Procura o produto digitado/clicado
+    const matches = prices.filter((item) => {
+
+      const product =
+        normalizeText(item.product);
+
+      const brand =
+        normalizeText(item.brand);
+
+      return (
+        product.includes(term) ||
+        brand.includes(term)
+      );
+
+    });
+
+
+    // Ordena do menor preço para o maior
+    matches.sort((a, b) => {
+      return Number(a.price) - Number(b.price);
+    });
+
+
+    if (matches.length === 0) {
+
+      compareResults.innerHTML = `
+        <div class="compare-empty">
+          <span>🔎</span>
+
+          <strong>
+            Nenhum preço encontrado
+          </strong>
+
+          <p>
+            Ainda não temos preço publicado para
+            <b>${escapeHTML(productName)}</b>.
+          </p>
+
+          <p>
+            Seja o primeiro a publicar.
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+
+    // Menor preço
+    const cheapest = matches[0];
+
+
+    const cheapestPrice =
+      formatBRL(cheapest.price);
+
+
+    compareResults.innerHTML = `
+      <div class="comparison-title">
+        <span>Resultados para</span>
+        <strong>
+          ${escapeHTML(productName)}
+        </strong>
+      </div>
+
+
+      <article class="cheapest-card">
+
+        <div class="cheapest-badge">
+          🏆 MENOR PREÇO
+        </div>
+
+        <div class="cheapest-product">
+
+          <div>
+
+            <h3>
+              ${escapeHTML(cheapest.product || "")}
+            </h3>
+
+            ${
+              cheapest.brand
+                ? `
+                  <p>
+                    ${escapeHTML(cheapest.brand)}
+                  </p>
+                `
+                : ""
+            }
+
+          </div>
+
+
+          <strong class="cheapest-price">
+            ${cheapestPrice}
+          </strong>
+
+        </div>
+
+
+        <div class="cheapest-store">
+
+          <span>
+            🏪 ${escapeHTML(cheapest.store || "")}
+          </span>
+
+          <span>
+            📍 ${escapeHTML(cheapest.city || "")}
+          </span>
+
+        </div>
+
+      </article>
+
+
+      ${
+        matches.length > 1
+          ? `
+            <div class="other-prices">
+
+              <h3>
+                Outros preços encontrados
+              </h3>
+
+              <div id="otherPricesList"></div>
+
+            </div>
+          `
+          : `
+            <div class="only-price">
+              Este é o único preço publicado até agora.
+            </div>
+          `
+      }
+    `;
+
+
+    // ========================================
+    // OUTROS PREÇOS
+    // ========================================
+
+    const otherPricesList =
+      $("#otherPricesList");
+
+
+    if (otherPricesList) {
+
+      matches
+        .slice(1)
+        .forEach((item) => {
+
+          const card =
+            document.createElement("div");
+
+          card.className =
+            "comparison-price-card";
+
+
+          card.innerHTML = `
+
+            <div class="comparison-store">
+
+              <strong>
+                ${escapeHTML(item.store || "")}
+              </strong>
+
+              <small>
+                📍 ${escapeHTML(item.city || "")}
+              </small>
+
+              ${
+                item.brand
+                  ? `
+                    <small>
+                      ${escapeHTML(item.brand)}
+                    </small>
+                  `
+                  : ""
+              }
+
+            </div>
+
+
+            <strong class="comparison-value">
+              ${formatBRL(item.price)}
+            </strong>
+
+          `;
+
+
+          otherPricesList.appendChild(card);
+
+        });
+
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      "Erro ao comparar preços:",
+      error
+    );
+
+
+    compareResults.innerHTML = `
+      <div class="compare-empty">
+
+        <span>⚠️</span>
+
+        <strong>
+          Erro ao carregar preços
+        </strong>
+
+        <p>
+          Verifique sua conexão e tente novamente.
+        </p>
+
+      </div>
+    `;
+
+  }
+
+}
+
+
+// ========================================
+// BOTÕES DA CESTA BÁSICA
+// ========================================
+
+productShortcuts.forEach((button) => {
+
+  button.addEventListener(
+    "click",
     async () => {
 
-      // Próxima etapa:
-      // buscar arroz, feijão, café etc.
-      // e mostrar os estabelecimentos
-      // começando pelo menor preço.
+      // Remove seleção anterior
+      productShortcuts.forEach((item) => {
+        item.classList.remove("selected");
+      });
+
+
+      // Marca produto escolhido
+      button.classList.add("selected");
+
+
+      const productName =
+        button.dataset.product || "";
+
+
+      // Coloca o produto no campo de busca
+      if (search) {
+        search.value = productName;
+      }
+
+
+      // Faz comparação
+      await compareProduct(productName);
 
     }
   );
+
+});
+
+
+// ========================================
+// PESQUISA DIGITADA
+// ========================================
+
+let searchTimer;
+
+
+if (search) {
+
+  search.addEventListener(
+    "input",
+    () => {
+
+      clearTimeout(searchTimer);
+
+
+      const value =
+        search.value.trim();
+
+
+      productShortcuts.forEach((button) => {
+
+        const product =
+          normalizeText(
+            button.dataset.product
+          );
+
+
+        const typed =
+          normalizeText(value);
+
+
+        button.classList.toggle(
+          "selected",
+          Boolean(typed && product === typed)
+        );
+
+      });
+
+
+      if (!value) {
+
+        compareResults.innerHTML = `
+          <div class="compare-empty">
+
+            <span>💰</span>
+
+            <strong>
+              Encontre o menor preço
+            </strong>
+
+            <p>
+              Escolha um produto acima ou faça uma busca.
+            </p>
+
+          </div>
+        `;
+
+        return;
+      }
+
+
+      // Espera um pouco para não pesquisar
+      // a cada letra digitada
+      searchTimer = setTimeout(() => {
+
+        compareProduct(value);
+
+      }, 450);
+
+    }
+  );
+
 }
 
 
@@ -713,6 +1131,7 @@ if (search) {
 // ========================================
 
 if ("serviceWorker" in navigator) {
+
   window.addEventListener(
     "load",
     () => {
@@ -720,13 +1139,17 @@ if ("serviceWorker" in navigator) {
       navigator.serviceWorker
         .register("/sw.js")
         .catch((error) => {
+
           console.error(
             "Service Worker:",
             error
           );
+
         });
+
     }
   );
+
 }
 
 
@@ -738,4 +1161,6 @@ if ($("#mainNav")) {
   $("#mainNav").style.display = "none";
 }
 
+
+// Verifica se existe sessão
 checkSession();
