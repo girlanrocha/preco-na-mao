@@ -640,14 +640,15 @@ async function loadFeed() {
 
           <div class="social-actions instagram-actions">
 
-            <button
-              type="button"
-              class="price-like"
-              title="Preço confirmado"
-            >
-              <span class="money-icon">$</span>
-              <b>0</b>
-            </button>
+          <button
+  type="button"
+  class="price-like"
+  data-price-id="${item.id}"
+  title="Confirmar este preço"
+>
+  <span class="money-icon">$</span>
+  <b>${Number(item.confirmations || 0)}</b>
+</button>
 
             
 
