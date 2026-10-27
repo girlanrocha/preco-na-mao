@@ -1000,7 +1000,178 @@ export default {
           );
         }
       }
+// ==================================
+// CONFIRMAR PREÇO
+// ==================================
 
+if (
+  url.pathname.startsWith("/api/prices/") &&
+  url.pathname.endsWith("/confirm") &&
+  request.method === "POST"
+) {
+
+  try {
+
+    const user =
+      await getCurrentUser(request, env);
+
+    if (!user) {
+      return Response.json(
+        {
+          ok: false,
+          message: "Você precisa estar logado."
+        },
+        { status: 401 }
+      );
+    }
+
+
+    const parts =
+      url.pathname.split("/");
+
+    const priceId =
+      Number(parts[3]);
+
+
+    if (
+      !Number.isInteger(priceId) ||
+      priceId <= 0
+    ) {
+
+      return Response.json(
+        {
+          ok: false,
+          message: "Preço inválido."
+        },
+        { status: 400 }
+      );
+    }
+
+
+    const price =
+      await env.DB.prepare(`
+        SELECT id
+        FROM prices
+        WHERE id = ?
+          AND status = 'active'
+        LIMIT 1
+      `)
+        .bind(priceId)
+        .first();
+
+
+    if (!price) {
+
+      return Response.json(
+        {
+          ok: false,
+          message: "Preço não encontrado."
+        },
+        { status: 404 }
+      );
+    }
+
+
+    // Verifica se o usuário já confirmou
+
+    const existing =
+      await env.DB.prepare(`
+        SELECT 1
+        FROM price_confirmations
+        WHERE price_id = ?
+          AND user_id = ?
+        LIMIT 1
+      `)
+        .bind(
+          priceId,
+          user.id
+        )
+        .first();
+
+
+    if (existing) {
+
+      const total =
+        await env.DB.prepare(`
+          SELECT COUNT(*) AS total
+          FROM price_confirmations
+          WHERE price_id = ?
+        `)
+          .bind(priceId)
+          .first();
+
+
+      return Response.json({
+        ok: true,
+        alreadyConfirmed: true,
+        confirmations:
+          Number(total?.total || 0),
+        message:
+          "Você já confirmou este preço."
+      });
+    }
+
+
+    // Registra a confirmação
+
+    await env.DB.prepare(`
+      INSERT INTO price_confirmations
+      (
+        price_id,
+        user_id
+      )
+      VALUES (?, ?)
+    `)
+      .bind(
+        priceId,
+        user.id
+      )
+      .run();
+
+
+    // Conta confirmações
+
+    const total =
+      await env.DB.prepare(`
+        SELECT COUNT(*) AS total
+        FROM price_confirmations
+        WHERE price_id = ?
+      `)
+        .bind(priceId)
+        .first();
+
+
+    return Response.json({
+      ok: true,
+      alreadyConfirmed: false,
+      confirmations:
+        Number(total?.total || 0),
+      message:
+        "Preço confirmado!"
+    });
+
+
+  } catch (error) {
+
+    console.error(
+      "ERRO CONFIRMAR PREÇO:",
+      error
+    );
+
+
+    return Response.json(
+      {
+        ok: false,
+        message:
+          "Não foi possível confirmar o preço.",
+        error: error.message
+      },
+      { status: 500 }
+    );
+
+  }
+
+}
       // ==================================
       // LOGOUT
       // ==================================
