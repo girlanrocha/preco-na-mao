@@ -679,7 +679,71 @@ async function loadFeed() {
       '<p class="empty">Erro ao carregar os preços.</p>';
   }
 }
+// ========================================
+// CONFIRMAR PREÇO
+// ========================================
 
+document.addEventListener("click", async (event) => {
+
+  const button = event.target.closest(".price-like");
+
+  if (!button) return;
+
+  const priceId = button.dataset.priceId;
+
+  if (!priceId) return;
+
+  button.disabled = true;
+
+  try {
+
+    const response = await fetch(
+      `/api/prices/${priceId}/confirm`,
+      {
+        method: "POST",
+        credentials: "include"
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.ok) {
+      toast(
+        data.message ||
+        "Não foi possível confirmar o preço."
+      );
+      return;
+    }
+
+    const counter = button.querySelector("b");
+
+    if (counter) {
+      counter.textContent =
+        Number(data.confirmations || 0);
+    }
+
+    if (data.alreadyConfirmed) {
+      toast("Você já confirmou este preço.");
+    } else {
+      toast("Preço confirmado! ✓");
+    }
+
+  } catch (error) {
+
+    console.error(
+      "Erro ao confirmar preço:",
+      error
+    );
+
+    toast("Erro ao confirmar o preço.");
+
+  } finally {
+
+    button.disabled = false;
+
+  }
+
+});
 
 // ========================================
 // PESQUISA / COMPARAÇÃO
