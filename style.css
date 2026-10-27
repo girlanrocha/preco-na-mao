@@ -1057,3 +1057,7 @@ header {
   color:#fff;
   box-shadow:0 4px 12px rgba(11,103,213,.22);
 }
+/* OCULTAR COMENTÁRIOS */
+.comment-price{
+  display:none !important;
+}
