@@ -937,7 +937,11 @@ export default {
       ) {
 
         try {
+const currentUser =
+  await getCurrentUser(request, env);
 
+const currentUserId =
+  currentUser ? currentUser.id : 0;
           const result =
             await env.DB.prepare(`
               SELECT
@@ -951,7 +955,12 @@ export default {
   WHERE price_confirmations.price_id = prices.id
 ) AS confirmations,
 
-
+(
+  SELECT COUNT(*)
+  FROM price_confirmations
+  WHERE price_confirmations.price_id = prices.id
+    AND price_confirmations.user_id = ?
+) AS user_confirmed,
                 
                 products.name AS product,
                 products.brand,
@@ -973,7 +982,9 @@ export default {
               WHERE prices.status = 'active'
               ORDER BY prices.id DESC
               LIMIT 100
-            `).all();
+            `)
+  .bind(currentUserId)
+  .all();
 
           const prices =
             (result.results || []).map(
