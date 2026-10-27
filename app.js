@@ -1167,11 +1167,12 @@ const categoryProducts = {
   combustiveis: {
     title: "⛽ Combustíveis",
     products: [
-      ["⛽", "Gasolina comum"],
-      ["⛽", "Gasolina aditivada"],
-      ["🌱", "Etanol"],
-      ["🚛", "Diesel S10"]
-    ]
+     
+    ["⛽", "Gasolina"],
+    ["⛽", "Gasolina Aditivada"],
+    ["🌱", "Etanol"],
+    ["🚛", "Diesel"]
+  
   },
 
   construcao: {
