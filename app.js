@@ -649,14 +649,7 @@ async function loadFeed() {
               <b>0</b>
             </button>
 
-            <button
-              type="button"
-              class="comment-price"
-              title="Comentar"
-            >
-              <span class="comment-icon">💬</span>
-              <b>0</b>
-            </button>
+            
 
             <button
               type="button"
