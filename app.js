@@ -1172,6 +1172,7 @@ const categoryProducts = {
     ["⛽", "Gasolina Aditivada"],
     ["🌱", "Etanol"],
     ["🚛", "Diesel"]
+    ]
   
   },
 
