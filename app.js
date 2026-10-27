@@ -1252,7 +1252,70 @@ const categoryProducts = {
 
 };
 
+// ========================================
+// SUGESTÕES DE PRODUTOS NA PUBLICAÇÃO
+// ========================================
 
+const publishCategory = $("#category");
+const productSuggestions = $("#productSuggestions");
+const publishProduct = $("#product");
+
+function updateProductSuggestions() {
+
+  if (!publishCategory || !productSuggestions) {
+    return;
+  }
+
+  const categoryMap = {
+    "Supermercado": "cesta",
+    "Farmácia": "farmacia",
+    "Combustível": "combustiveis",
+    "Combustíveis": "combustiveis",
+    "Construção": "construcao"
+  };
+
+  const categoryKey =
+    categoryMap[publishCategory.value];
+
+  const data =
+    categoryProducts[categoryKey];
+
+  productSuggestions.innerHTML = "";
+
+  if (!data) {
+    return;
+  }
+
+  data.products.forEach(([icon, productName]) => {
+
+    const option =
+      document.createElement("option");
+
+    option.value = productName;
+
+    productSuggestions.appendChild(option);
+
+  });
+
+}
+
+if (publishCategory) {
+
+  publishCategory.addEventListener(
+    "change",
+    () => {
+
+      if (publishProduct) {
+        publishProduct.value = "";
+      }
+
+      updateProductSuggestions();
+
+    }
+  );
+
+  updateProductSuggestions();
+}
 function resetCompareResults() {
 
   if (!compareResults) return;
