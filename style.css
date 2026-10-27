@@ -1061,3 +1061,7 @@ header {
 .comment-price{
   display:none !important;
 }
+/* OCULTAR COMENTÁRIOS DO FEED */
+.comment-price{
+  display: none !important;
+}
