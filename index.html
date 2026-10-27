@@ -419,11 +419,15 @@
     </label>
 
     <input
-      id="product"
-      class="input"
-      placeholder="Ex.: Arroz"
-      required
-    >
+  id="product"
+  class="input"
+  placeholder="Comece a digitar o produto"
+  list="productSuggestions"
+  autocomplete="off"
+  required
+>
+
+<datalist id="productSuggestions"></datalist>
 
 
     <label for="brand">
