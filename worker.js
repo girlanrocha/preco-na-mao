@@ -944,6 +944,15 @@ export default {
                 prices.id,
                 prices.price,
                 prices.created_at,
+
+(
+  SELECT COUNT(*)
+  FROM price_confirmations
+  WHERE price_confirmations.price_id = prices.id
+) AS confirmations,
+
+
+                
                 products.name AS product,
                 products.brand,
                 products.category,
