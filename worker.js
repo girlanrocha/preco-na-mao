@@ -235,7 +235,116 @@ export default {
 
     const url =
       new URL(request.url);
+// ========================================
+// MODO MANUTENÇÃO
+// ========================================
 
+if (!url.pathname.startsWith("/api/")) {
+  return new Response(`
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VP Compras - Manutenção</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f4f8fd;
+      font-family: Arial, sans-serif;
+      color: #172033;
+      padding: 20px;
+    }
+
+    .maintenance {
+      width: 100%;
+      max-width: 500px;
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 40px 28px;
+      text-align: center;
+      box-shadow: 0 10px 35px rgba(0,0,0,.08);
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: 800;
+      color: #1267d8;
+      margin-bottom: 25px;
+    }
+
+    .icon {
+      font-size: 55px;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      font-size: 25px;
+      margin: 0 0 12px;
+    }
+
+    p {
+      color: #667085;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .region {
+      margin-top: 25px;
+      font-size: 13px;
+      color: #1267d8;
+      font-weight: 700;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="maintenance">
+
+    <div class="logo">
+      VP Compras
+    </div>
+
+    <div class="icon">
+      🛠️
+    </div>
+
+    <h1>
+      Estamos em manutenção
+    </h1>
+
+    <p>
+      Estamos trabalhando em melhorias
+      para oferecer uma experiência ainda melhor.
+      Voltaremos em breve.
+    </p>
+
+    <div class="region">
+      Vila Pavão e região
+    </div>
+
+  </div>
+
+</body>
+</html>
+  `, {
+    status: 503,
+    headers: {
+      "Content-Type": "text/html; charset=UTF-8",
+      "Cache-Control": "no-store, no-cache, must-revalidate"
+    }
+  });
+}
     // ====================================
     // API
     // ====================================
